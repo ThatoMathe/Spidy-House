@@ -1,0 +1,27 @@
+# Ignore OS-generated files
+.DS_Store
+Thumbs.db
+
+# Ignore IDE/Editor files
+.vscode/
+.idea/
+*.iml
+
+# Ignore dependencies
+node_modules/
+vendor/
+.env
+
+# Ignore logs and cache
+logs/
+*.log
+*.cache
+
+# Ignore compiled files
+*.class
+*.exe
+*.dll
+*.o
+*.so
+*.pyc
+__pycache__/
