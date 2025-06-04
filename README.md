@@ -31,9 +31,9 @@ Spidy-House Project
 8. License  
    - This project is open-source under the MIT License.
   
-============================================
+
 💻 Live Demo / Preview
-============================================
+=======================
 
 🌐 Explore the live project here:
 👉 [https://spidywarehouse.unaux.com/](https://spidywarehouse.unaux.com/)
@@ -43,9 +43,9 @@ Spidy-House Project
 ✔️ Integrated Barcode Scanner and Transfer System
 
 
-============================================
+
 How to Run the Project
-============================================
+======================
 
 1. Clone the Repository:
    Open your terminal or Git Bash and run:
