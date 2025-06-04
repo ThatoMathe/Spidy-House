@@ -1,0 +1,68 @@
+{
+  "name": "my-warehouse-app",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@craco/craco": "^7.1.0",
+    "@google/genai": "^0.10.0",
+    "@tanstack/react-query": "^5.76.0",
+    "@tanstack/react-query-persist-client": "^5.76.0",
+    "@zxing/browser": "^0.1.5",
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
+    "cra-template-pwa": "2.0.0",
+    "crypto-browserify": "^3.12.1",
+    "date-fns": "^4.1.0",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
+    "lucide-react": "^0.509.0",
+    "openai": "^4.96.0",
+    "os-browserify": "^0.3.0",
+    "path-browserify": "^1.0.1",
+    "react": "^19.1.0",
+    "react-app-rewired": "^2.2.1",
+    "react-csv": "^2.2.2",
+    "react-datepicker": "^8.3.0",
+    "react-day-picker": "^9.7.0",
+    "react-detect-offline": "^2.4.5",
+    "react-dom": "^19.1.0",
+    "react-router-dom": "^7.5.0",
+    "react-scripts": "5.0.1",
+    "react-select": "^5.10.1",
+    "react-sortablejs": "^6.1.4",
+    "react-toastify": "^11.0.5",
+    "sortablejs": "^1.15.6",
+    "swiper": "^11.2.6",
+    "swr": "^2.3.3",
+    "web-vitals": "^4.2.4"
+  },
+  "scripts": {
+    "start": "concurrently \"cross-env HOST=192.168.18.124 PORT=3000 react-scripts start\" \"php -S 192.168.18.124:8000\"",
+    "build": "react-scripts build && npm run copy-backend",
+    "copy-backend": "copyfiles \"config/**\" \"api/**\" \"uploads/**\" build/ && copyfiles -u 0 \"vendor/**\" build/ && copyfiles \".env\" build/"
+  },
+
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "copyfiles": "^2.4.1",
+    "cross-env": "^7.0.3"
+  }
+}
