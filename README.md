@@ -29,7 +29,18 @@ Spidy-House Project
    - Submit a **pull request** for review before merging into the main branch.  
 
 8. License  
-   - This project is open-source under the MIT License.  
+   - This project is open-source under the MIT License.
+  
+============================================
+💻 Live Demo / Preview
+============================================
+
+🌐 Explore the live project here:
+👉 [https://spidywarehouse.unaux.com/](https://spidywarehouse.unaux.com/)
+
+✔️ Fully responsive and functional
+✔️ Built with React + PHP + MySQL
+✔️ Integrated Barcode Scanner and Transfer System
 
 
 ============================================
