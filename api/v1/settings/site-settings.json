@@ -1,10 +1,10 @@
 {
-    "api_url": "http:\/\/192.168.18.124:8000",
+    "api_url": "http:\/\/localhost:8000",
     "environment": "development",
     "site_name": "Spidy Warehouse ok",
     "tagline": "Powerful Warehouse MS",
     "refresh_frequency": "6000",
-    "gemini_api": "AIzaSyA6H7_mxVsyE_AfAy8Id6gEBUHFoK16GbM",
+    "gemini_api": "GEMINI API HERE",
     "logo_300_url": "\/uploads\/logos\/logo_300.jpeg",
     "logo_200_url": "\/uploads\/logos\/logo_200.png",
     "smtp_host": "serv33.registerdomain.net.za",
