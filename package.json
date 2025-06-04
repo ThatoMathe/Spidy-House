@@ -37,9 +37,8 @@
     "web-vitals": "^4.2.4"
   },
   "scripts": {
-    "start": "concurrently \"cross-env HOST=192.168.18.124 PORT=3000 react-scripts start\" \"php -S 192.168.18.124:8000\"",
-    "build": "react-scripts build && npm run copy-backend",
-    "copy-backend": "copyfiles \"config/**\" \"api/**\" \"uploads/**\" build/ && copyfiles -u 0 \"vendor/**\" build/ && copyfiles \".env\" build/"
+    "start": "concurrently \"cross-env HOST=localhost PORT=3000 react-scripts start\" \"php -S localhost:8000\"",
+    "build": "react-scripts build",
   },
 
   "eslintConfig": {
