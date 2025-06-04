@@ -16,18 +16,20 @@ Spidy-House Project
    - Version Control: Git & GitHub  
 
 4. Team Members  
-   - Thato Mathe (UI/UX, Testing)  
-   - Taps (Database)  
-   - Boitumelo (Security & AI)  
-   - Thabo & Thabiso (Developers)  
-   - Bongane (Technical Support)  
+   - **Thato Mathe** (UI/UX, Testing) - [@ThatoMathe](https://github.com/ThatoMathe) 
+   - **Tapiwanashe Mtombeni** (Database)
+   - **Boitumelo Shalang** (Security & AI)
+   - **Makale Thabo** (Developer) – [@Thabo486](https://github.com/Thabo486)
+   - **Makale Thabiso** (Developer) – [@RivaldoTM](https://github.com/RivaldoTM)
+   - **Bongane Matewela** (Technical Support)
 
 5. How to Run the Project  
    - Clone the repository:  
      `git clone https://github.com/ThatoMathe/Spidy-House.git`  
    - Navigate into the project directory:  
      `cd Spidy-House`  
-   - Run the project using XAMPP (for PHP & MySQL).  
+   - Run the project using XAMPP (for PHP & MySQL).
+   - 
 
 6. Contribution Guidelines  
    - Every team member must **pull the latest updates** before making changes (`git pull origin main`).  
