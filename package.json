@@ -26,6 +26,7 @@
     "react-day-picker": "^9.7.0",
     "react-detect-offline": "^2.4.5",
     "react-dom": "^19.1.0",
+    "react-photo-view": "^1.2.7",
     "react-router-dom": "^7.5.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.10.1",
@@ -38,9 +39,8 @@
   },
   "scripts": {
     "start": "concurrently \"cross-env HOST=localhost PORT=3000 react-scripts start\" \"php -S localhost:8000\"",
-    "build": "react-scripts build",
+    "build": "react-scripts build"
   },
-
   "eslintConfig": {
     "extends": [
       "react-app",
