@@ -1,0 +1,91 @@
+import React, { useEffect, useState } from 'react';
+import { useSettings } from '../../context/SettingsContext';
+
+const AddWarehouse = ({ onClose, refetch }) => {
+  const { settings } = useSettings();
+  const [formData, setFormData] = useState({
+    WarehouseName: '',
+    LocationName: '',
+    LocationAddress: ''
+  });
+
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+  };
+
+const handleSubmit = () => {
+fetch(`${settings.api_url}/api/v1/warehouses/newWarehouse.php`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(formData),
+  credentials: 'include' // Include session/cookies
+})
+
+    .then(res => res.json())
+    .then(data => {
+      refetch();
+      setFormData({  // reset form
+        WarehouseName: '',
+        LocationName: '',
+        LocationAddress: ''
+      });
+      onClose();
+    })
+    .catch(err => console.error('Add Warehouse error:', err));
+};
+
+  return (
+    <>
+
+      {/* Modal */}
+      <div className="modal show d-block mb-4" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+        <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Add New Warehouse</h5>
+              <button
+                type="button"
+                className="btn-close"
+                aria-label="Close"
+                onClick={onClose}
+              ></button>
+            </div>
+            <div className="modal-body">
+              <input
+                className="form-control mb-2"
+                name="WarehouseName"
+                placeholder="Warehouse Name"
+                onChange={handleChange}
+              />
+              <input
+                className="form-control mb-2"
+                name="LocationName"
+                type="text"
+                placeholder="Location Name"
+                onChange={handleChange}
+              />
+              <input
+                className="form-control mb-2"
+                name="LocationAddress"
+                type="text"
+                placeholder="Location Address"
+                onChange={handleChange}
+              />
+            </div>
+            <div className="modal-footer">
+              <button className="btn btn-secondary" onClick={onClose}>
+                Cancel
+              </button>
+              <button className="btn btn-primary" onClick={handleSubmit}>
+                Add Warehouse
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </>
+  );
+};
+
+export default AddWarehouse;

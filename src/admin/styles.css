@@ -1,0 +1,770 @@
+html,
+body {
+  background-color: #f8f9fa00 !important;
+  margin: 0;
+  padding: 0;
+  height: auto;
+  width: 100%;
+  overflow-x: hidden;
+}
+
+html {
+  -webkit-text-size-adjust: 100%; /* Prevent font auto-resize on iOS */
+  -ms-text-size-adjust: 100%;     /* Prevent font auto-resize on IE Mobile */
+  text-size-adjust: 100%;         /* Standard property */
+}
+
+
+
+
+@media (max-width: 768px) {
+  /* This covers the whole wrapper, blocks clicks and scroll */
+  .blocker-overlay {
+    position: absolute;
+    inset: 0;
+    /* shorthand for top: 0; right: 0; bottom: 0; left: 0 */
+    z-index: 999;
+    background: rgba(0, 0, 0, 0);
+    /* optional dim */
+    pointer-events: all;
+  }
+
+  /* Makes content blurry and not clickable */
+  .Custcontainer.blurred {
+    filter: blur(4px);
+    pointer-events: none;
+    /* disables interaction */
+    user-select: none;
+    /* disables text selection */
+    overflow: hidden;
+    /* blocks inner scroll */
+  }
+
+  /* Prevent scrolling on the whole page */
+  body.sidebar-lock {
+    overflow: hidden;
+  }
+}
+
+
+
+
+
+
+
+
+.info-card {
+  border: 2px solid transparent;
+  border-radius: 12px;
+  padding: 1rem;
+  text-align: center;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  background-color: #fff;
+  transform: scale(1);
+}
+
+.info-card:hover {
+  border: 0.01rem solid currentColor;
+  transform: scale(1);
+  /* Zoom in */
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  /* Optional subtle shadow */
+}
+
+
+body.dark-mode {
+  background-color: #333 !important;
+  color: #ffffff;
+  transition: background-color 0.3s, color 0.3s;
+}
+
+/* ========== DARK MODE OVERRIDES ========== */
+body.dark-mode .Custsidebar {
+  background-color: #2a2a2a;
+  border-right: 0.01rem solid #444;
+}
+
+body.dark-mode .Custcontainer {
+  background-color: #2c2c2c;
+}
+
+body.dark-mode .Custheader {
+  background-color: #333;
+}
+
+body.dark-mode .info-card {
+  background-color: #2f2f2f;
+  border-color: #555;
+}
+
+body.dark-mode .sidebar {
+  background-color: #2a2a2a;
+}
+
+body.dark-mode .sidebar .nav-link {
+  color: #ddd;
+}
+
+body.dark-mode .sidebar .nav-link {
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border-radius: 0;
+}
+
+body.dark-mode .sidebar .nav-link.active {
+  /* color: rgb(121, 121, 121) !important; */
+  background-color: rgb(122, 117, 109);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+body.dark-mode .sidebar .nav-link:hover {
+  background-color: rgb(73, 73, 73);
+  text-decoration: none;
+}
+
+body.dark-mode .sidebar .nav-link:hover .sidebar-header-text {
+  font-weight: bold;
+}
+
+body.dark-mode .sidebar .nav-link i,
+body.dark-mode .sidebar .nav-link span i {
+  color: #bbb;
+}
+
+body.dark-mode .sidebar .logo h1 {
+  color: #e0e0e0 !important;
+}
+
+body.dark-mode .toggle-btn {
+  background-color: #444;
+  color: #ccc;
+  border-color: #666;
+}
+
+body.dark-mode .form-control,
+body.dark-mode .form-select {
+  color: #ffffff;
+  background-color: #2c2c2c;
+  border-color: #555555;
+  /* Optional for better contrast/focus experience */
+  box-shadow: none;
+}
+
+body.dark-mode .form-control::placeholder {
+  color: #bbbbbb;
+}
+
+
+
+/* Force readable text colors in dark mode */
+body.dark-mode .text-black {
+  color: #ffffff !important;
+}
+
+body.dark-mode .fas {
+  color: #ffffff5e !important;
+}
+
+
+body.dark-mode .text-muted {
+  color: #cccccc !important;
+}
+
+html.dark-mode h5 {
+  color: #cccccc !important;
+}
+
+html.dark-mode h3 {
+  color: #cccccc !important;
+}
+
+html.dark-mode small {
+  color: #cccccc !important;
+}
+
+
+body.dark-mode .card {
+  background-color: #2c2c2c;
+  color: #ffffff;
+  border-color: #444;
+}
+
+body.dark-mode .card:hover {
+  transform: scale(1.03);
+  border-color: #999999;
+  box-shadow: 0 0 15px rgba(161, 161, 161, 0.2);
+  background-color: #474747;
+  /* Light background on hover */
+}
+
+/* toast */
+/* Toast styles only when body has dark-mode */
+body.dark-mode .Toastify__toast {
+  background-color: #1e1e1e;
+  color: #f5f5f5;
+  border-left: 4px solid #5e81ac;
+}
+
+/* Optional: success toast in dark mode */
+body.dark-mode .Toastify__toast--success {
+  background-color: #1e1e1e;
+  color: #d1fadf;
+  border-left-color: #22c55e;
+}
+
+/* Optional: error toast in dark mode */
+body.dark-mode .Toastify__toast--error {
+  background-color: #1e1e1e;
+  color: #fddcdc;
+  border-left-color: #ef4444;
+}
+
+/* Optional: info toast in dark mode */
+body.dark-mode .Toastify__toast--info {
+  background-color: #1e1e1e;
+  color: #dbeafe;
+  border-left-color: #3b82f6;
+}
+
+
+
+/* Dark Mode Overrides for Bootstrap-like tables */
+body.dark-mode .table {
+  background-color: #2c2c2c;
+  color: #ffffff;
+}
+
+body.dark-mode .table {
+  --bs-table-color: #ffffff;
+  --bs-table-bg: #2c2c2c;
+  --bs-table-border-color: #444444;
+
+  --bs-table-striped-bg: rgba(255, 255, 255, 0.05);
+  --bs-table-striped-color: #ffffff;
+
+  --bs-table-hover-bg: rgba(255, 255, 255, 0.075);
+  --bs-table-hover-color: #ffffff;
+
+  --bs-table-active-bg: rgba(255, 255, 255, 0.1);
+  --bs-table-active-color: #ffffff;
+}
+
+body.dark-mode .table-light {
+  --bs-table-color: #ffffff;
+  --bs-table-bg: #3a3a3a;
+  --bs-table-border-color: #555555;
+
+  --bs-table-striped-bg: #444444;
+  --bs-table-striped-color: #ffffff;
+
+  --bs-table-active-bg: #555555;
+  --bs-table-active-color: #ffffff;
+
+  --bs-table-hover-bg: #4a4a4a;
+  --bs-table-hover-color: #ffffff;
+
+  color: var(--bs-table-color);
+  border-color: var(--bs-table-border-color);
+}
+
+
+
+body.dark-mode .table th,
+body.dark-mode .table td {
+  border-color: #444;
+}
+
+body.dark-mode .table thead {
+  background-color: #3a3a3a;
+  color: #ffffff;
+}
+
+body.dark-mode .table-hover tbody tr:hover {
+  background-color: #3f3f3f;
+}
+
+body.dark-mode .table .text-muted {
+  color: #bbbbbb !important;
+}
+
+body.dark-mode hr {
+  border-top: 1px solid #555;
+}
+
+body.dark-mode .img-thumbnail {
+  background-color: #444;
+  border-color: #666;
+}
+
+/* model */
+body.dark-mode .modal-content {
+  background-color: #2c2c2c;
+  color: #ffffff;
+  border-color: #444;
+}
+
+html.dark-mode .modal-header,
+html.dark-mode .modal-footer {
+  border-color: #444;
+}
+
+html.dark-mode .modal-title {
+  color: #ffffff;
+}
+
+html.dark-mode .form-control {
+  background-color: #33333300 !important;
+  color: inherit !important;
+  border-color: #555;
+}
+
+html.dark-mode .form-control::placeholder {
+  color: #bbb;
+}
+
+html.dark-mode .form-label {
+  color: #ccc !important;
+}
+
+html.dark-mode .info-card {
+  background-color: #3a3a3a;
+  color: #ffffff;
+}
+
+.Custbody .info-card {
+  background-color: #fcfcfc00 !important;
+  color: inherit !important;
+}
+
+html.dark-mode .btn-close {
+  filter: invert(1);
+}
+
+
+html.dark-mode .btn-success {
+  background-color: #198754;
+  border-color: #198754;
+}
+
+html.dark-mode .btn-secondary {
+  background-color: #6c757d;
+  border-color: #6c757d;
+}
+
+/* AI Botman */
+/* Chat Widget: Dark Mode Support */
+html.dark-mode .chat-widget {
+  color: #f1f1f1;
+}
+
+html.dark-mode .chat-widget .text-black {
+  color: #ffffff !important;
+}
+
+html.dark-mode .chat-widget .btn-light {
+  background-color: #444 !important;
+  color: #fff !important;
+  border: none;
+}
+
+body.dark-mode .chat-widget .bg-light {
+  background-color: #444 !important;
+  color: #eee !important;
+}
+
+body.dark-mode .chat-widget .bg-white {
+  background-color: #2a2a2a !important;
+  color: #eee !important;
+  border-color: #555 !important;
+}
+
+body.dark-mode .chat-widget .border-top {
+  border-top: 1px solid #444 !important;
+}
+
+body.dark-mode .chat-widget input.form-control {
+  background-color: #333;
+  color: #fff;
+  border-color: #555;
+}
+
+body.dark-mode .chat-widget input::placeholder {
+  color: #aaa;
+}
+
+body.dark-mode .chat-widget .btn-outline-secondary {
+  border-color: #666;
+  color: #ccc;
+}
+
+body.dark-mode .chat-widget .btn-outline-secondary:hover {
+  background-color: #444;
+  color: #fff;
+}
+
+/* Light Mode */
+.user-message {
+  background-color: #d0ebff;
+  /* Soft sky blue */
+  color: #003566;
+}
+
+.bot-message {
+  background-color: #f4f4f4;
+  /* Light gray */
+  color: #222;
+}
+
+body.dark-mode .user-message {
+  background-color: #264653;
+  /* Teal blue */
+  color: #e0f7fa;
+}
+
+body.dark-mode .bot-message {
+  background-color: #2b2b2b;
+  color: #ddd;
+}
+
+
+
+
+/* ========== END DARK MODE OVERRIDES ========== */
+
+/* Your original styles follow unchanged... */
+.wrapper {
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+  display: flex;
+  transform: translateX(250px);
+}
+
+.wrapper.shifted {
+  position: relative;
+}
+
+@media (max-width: 769px) {
+  .wrapper {
+    transform: translateX(0);
+  }
+}
+
+.Custsidebar {
+  width: 250px;
+  flex-shrink: 0;
+  background-color: #ffffff;
+  height: 100vh;
+  border-right: 0.01rem solid #adb5bd;
+  position: fixed;
+  left: 0;
+  top: 0;
+  transform: translateX(-250px);
+  z-index: 999;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.Custsidebar.open {
+  transform: translateX(0);
+}
+
+@media (max-width: 769px) {
+  .Custsidebar {
+    transition: transform 0.3s ease;
+  }
+}
+
+.toggle-btn {
+  cursor: pointer;
+  position: absolute;
+  right: -35px;
+  transform: translateY(-50%);
+  top: 50%;
+  z-index: -1;
+  background-color: #fff;
+  color: #adb5bd;
+  margin: 0px;
+  padding: 10px;
+  font-size: 4vmin;
+  border: 1px solid #adb5bd;
+  border-radius: 0px 5px 5px 0px;
+  cursor: pointer;
+}
+
+@media (min-width: 769px) {
+  .toggle-btn {
+    display: none;
+  }
+}
+
+@media (max-width: 769px) {
+  .Custsidebar {
+    border-right: 0.1rem solid #adb5bd;
+  }
+}
+
+.Custcontainer {
+  display: grid;
+  flex-grow: 1;
+  height: 100vh;
+  width: 100% !important;
+  grid-template-columns: 1fr;
+  grid-template-rows: 60px 100%;
+  grid-template-areas:
+    "header header"
+    "body body";
+  background-color: #fff;
+}
+
+@media (min-width: 769px) {
+  .Custcontainer.sidebar-open {
+    margin-left: 250px;
+    transform: translateX(-250px);
+  }
+}
+
+.Custheader {
+  grid-area: header;
+  width: 100%;
+  height: 100%;
+  background-color: #e8e8e8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 1rem;
+  z-index: 2;
+}
+
+.Custbody {
+  overflow-y: auto;
+  grid-area: body;
+  padding: 1rem;
+  padding-bottom: 100px;
+  z-index: 1;
+}
+
+/* Scrollbar */
+.Custbody::-webkit-scrollbar {
+  width: 5px;
+}
+
+.Custbody::-webkit-scrollbar-thumb {
+  background-color: #adb5bd;
+  border-radius: 4px;
+}
+
+.Custbody::-webkit-scrollbar-thumb:hover {
+  background-color: #6d6d6d;
+}
+
+.Custbody::-webkit-scrollbar-track {
+  background-color: #f1f1f100;
+  border-radius: 4px;
+}
+
+.btn {
+  z-index: 0 !important;
+}
+
+.info-card {
+  border: 1px dashed #ccc;
+  padding: 1rem;
+  text-align: center;
+  border-radius: 0.5rem;
+  background-color: #fff;
+}
+
+/* Cards */
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: scale(1.01);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0.2);
+  background-color: #f8f9fa;
+  /* Light background on hover */
+}
+
+
+
+
+/* Sidebar */
+.sidebar {
+  background-color: #fff;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.sidebar .logo {
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.sidebar .logo h1 {
+  font-size: 3.8vmin !important;
+  color: rgb(100, 100, 84) !important;
+}
+
+.sidebar .logo h2 {
+  font-size: 2vmin !important;
+}
+
+.sidebar .logo img {
+  width: 10vmin !important;
+  height: 10vmin !important;
+  margin-right: 5px !important;
+}
+
+.sidebar .nav-link.active {
+  /* color: rgb(121, 121, 121) !important; */
+  background-color: rgb(206, 198, 184);
+  font-weight: 500;
+  text-decoration: none;
+}
+
+
+.sidebar .nav-link {
+  color: #333;
+  font-weight: 500;
+}
+
+.sidebar .nav-link i {
+  margin-right: 0.0rem;
+}
+
+.sidebar .nav-link span {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sidebar .nav-link span i {
+  font-size: 0.8rem !important;
+  width: 12px;
+  color: grey;
+  text-align: center;
+}
+
+
+
+
+
+.sidebar .nav-link {
+  transition: background-color 0.2s ease, color 0.2s ease;
+  border-radius: 0;
+}
+
+.sidebar .nav-link:hover {
+  background-color: rgb(247, 247, 247);
+  text-decoration: none;
+}
+
+.sidebar .nav-link:hover .sidebar-header-text {
+  font-weight: bold;
+}
+
+
+/* Scrollbar */
+.sidebar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.sidebar::-webkit-scrollbar-thumb {
+  background-color: #adb5bd;
+  border-radius: 4px;
+}
+
+.sidebar::-webkit-scrollbar-thumb:hover {
+  background-color: #868e96;
+}
+
+.sidebar::-webkit-scrollbar-track {
+  background-color: #93939300;
+  border-radius: 4px;
+}
+
+/* ========================================================= */
+/* Add this to your CSS file (styles.css or global styles) */
+/* DayPicker - Gray Dark Mode */
+.rdp-root {
+  --rdp-accent-color: rgb(122, 117, 109) !important;
+  --rdp-accent-background-color: #f0f0ff;
+  --rdp-day-height: 44px;
+  --rdp-day-width: 44px;
+  --rdp-day_button-border-radius: 100%;
+  --rdp-day_button-border: 0px solid transparent !important;
+  --rdp-day_button-height: 40px;
+  --rdp-day_button-width: 40px;
+  --rdp-selected-border: 0px rgb(122, 117, 109) !important;
+  --rdp-disabled-opacity: 0.5;
+  --rdp-outside-opacity: 0.75;
+  --rdp-today-color: rgb(149, 122, 1) !important;
+
+  --rdp-dropdown-gap: 0.5rem;
+  --rdp-months-gap: 2rem;
+  --rdp-nav_button-disabled-opacity: 0.5;
+  --rdp-nav_button-height: 2.25rem;
+  --rdp-nav_button-width: 2.25rem;
+  --rdp-nav-height: 2.75rem;
+  --rdp-range_middle-background-color: rgb(122, 117, 109) !important;
+  --rdp-range_middle-color: white;
+  --rdp-range_start-color: white;
+  --rdp-range_start-background: linear-gradient(var(--rdp-gradient-direction), transparent 50%, rgb(122, 117, 109) !important; 50%);
+  --rdp-range_start-date-background-color: var(--rdp-accent-color);
+  --rdp-range_end-background: linear-gradient(var(--rdp-gradient-direction), var(--rdp-range_middle-background-color) 50%, transparent 50%);
+  --rdp-range_end-color: white;
+  --rdp-range_end-date-background-color: var(--rdp-accent-color);
+  --rdp-week_number-border-radius: 100%;
+  --rdp-week_number-border: 2px solid transparent;
+  --rdp-week_number-height: var(--rdp-day-height);
+  --rdp-week_number-opacity: 0.75;
+  --rdp-week_number-width: var(--rdp-day-width);
+  --rdp-weeknumber-text-align: center;
+  --rdp-weekday-opacity: 0.75;
+  --rdp-weekday-padding: 0.5rem 0rem;
+  --rdp-weekday-text-align: center;
+  --rdp-gradient-direction: 90deg;
+  --rdp-animation_duration: 0.3s;
+  --rdp-animation_timing: cubic-bezier(0.4, 0, 0.2, 1);
+
+}
+
+
+
+.table-success {
+  transition: background-color 1s ease;
+}
+
+
+.dashboard-icons {
+  font-size: 6rem;
+  color: rgba(0, 0, 0, 0.05) !important;
+  bottom: -1rem;
+  right: -1rem;
+  z-index: 1;
+  pointer-events: none;
+  transition: color 0.3s ease;
+}
+
+/* On hover: fade darker */
+.card:hover .dashboard-icons {
+  color: rgba(0, 0, 0, 0.2) !important;
+}
+
+/* 🔽 On mobile: make icon smaller */
+@media (max-width: 767.98px) {
+  .dashboard-icons {
+    font-size: 3rem; /* smaller for mobile */
+    bottom: 0.5rem;
+    right: 0.5rem;
+  }
+}
+

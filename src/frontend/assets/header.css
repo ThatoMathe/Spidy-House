@@ -1,0 +1,59 @@
+.top-bar .social-icons a {
+    color: #ffffffcc;
+    margin-right: 12px;
+    transition: color 0.3s ease;
+  }
+  .top-bar .social-icons a:hover {
+    color: #0dcaf0;
+  }
+  
+  .top-bar .contact-info a {
+    font-weight: 500;
+  }
+  
+  .navbar.transition {
+    transition: background-color 0.4s ease, box-shadow 0.3s ease;
+  }
+  
+  .fading-line {
+    height: 1px;
+    border: none;
+    background: linear-gradient(to right, #212529 20%, transparent 100%);
+    margin: 0;
+    opacity: 1;
+  }
+  
+  
+
+  /* Back to Top Button */
+.back-to-top-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #212529;
+    color: white;
+    height:40px;
+    width:40px;
+    padding: 10px;
+    border-radius: 9%;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    transition: opacity 0.3s ease;
+    opacity: 0.7;
+    z-index: 99999;
+    text-decoration: none;
+  }
+  
+  .back-to-top-btn:hover {
+    opacity: 1;
+    background-color: #3b3c3d;
+  }
+  
+  
+  
+  
+  
+  

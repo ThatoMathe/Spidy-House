@@ -1,0 +1,54 @@
+.nav-section {
+    background-image: url('../../assets/images/store-5619201_1280.jpg');
+    background-size: cover;
+    background-position: center;
+    height: 300px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .nav-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.704); /* dark overlay for fade effect */
+    z-index: 1;
+  }
+  
+  .overlay {
+    position: relative;
+    z-index: 2;
+    color: white;
+    text-align: center;
+  }
+  
+  .nav-title {
+    font-size: 2rem;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+  
+  .nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    font-size: 1.25rem;
+    font-weight: 500;
+  }
+  
+  .nav-links a {
+    color: white;
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+  
+  .nav-links a:hover {
+    color: #00f0ff;
+  }
+  
+  .separator {
+    color: white;
+    font-weight: 300;
+  }
