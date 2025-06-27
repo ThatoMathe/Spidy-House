@@ -87,8 +87,8 @@ How to Run the Project
 
 7. Notes:
    - Make sure the API URL in your React settings points to:
-     http://localhost:8000/api or http://localhost/Spidy-House/api
-   - Configure DB credentials inside `config/db.php`
+     http://localhost:8000/
+   - Configure DB credentials inside `/api/config/db.php`
 
 ### 💻 Developed By
 This website was fully developed and implemented by Thabo and Thabiso,
