@@ -28,11 +28,11 @@ $dotenv->safeLoad();
 // Get allowed origin from environment
 $allowed_origin = $_ENV['BASE_URL'] ?? ''; 
 
-if (in_array($_SERVER['REQUEST_METHOD'], ['OPTIONS', 'POST', 'GET'])) {
+if (in_array($_SERVER['REQUEST_METHOD'], ['OPTIONS', 'POST', 'GET', 'DELETE'])) {
     // check the session
     if (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['HTTP_ORIGIN'] === $allowed_origin) {
         header("Access-Control-Allow-Origin: $allowed_origin");
-        header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
+        header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE");
         header("Access-Control-Allow-Headers: Content-Type, Authorization");
         header("Access-Control-Allow-Credentials: true");
     }
