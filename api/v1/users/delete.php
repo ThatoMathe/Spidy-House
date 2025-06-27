@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, admin');
+allowOnlyAdmins('admin, manager');
 
 // Check if it's a POST request and contains the 'action' parameter
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             if ($stmt->execute()) {
                 echo json_encode(["status" => "success", "message" => "User deleted successfully."]);
-                logUserActivity($conn, "Users", "Deleted user [$userID]");
+                logUserActivity($conn, "Users", "Deleted user [$userID]", $userID);
             } else {
                 echo json_encode(["status" => "error", "message" => "Failed to delete user."]);
             }

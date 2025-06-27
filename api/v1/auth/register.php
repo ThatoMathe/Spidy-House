@@ -61,7 +61,7 @@ if ($method === 'POST') {
             'loggedIn' => true,
             'user' => $user
         ]);
-        logUserActivity($conn, "Users", "New registered user [$userID] [$username]");
+        logUserActivity($conn, "Users", "New registered user [$userID] [$username]", $userID);
     } else {
         echo json_encode(['loggedIn' => false, 'error' => 'Registration failed']);
     }

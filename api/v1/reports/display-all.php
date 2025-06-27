@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, manager, staff');
+allowOnlyAdmins('admin, manager, staff');
 
 function getReports($conn) {
     $sql = "

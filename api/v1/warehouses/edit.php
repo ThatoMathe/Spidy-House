@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin');
+allowOnlyAdmins('admin, manager');
 
 // Get the JSON body data
 $data = json_decode(file_get_contents("php://input"), true);
@@ -22,7 +22,7 @@ if (isset($data['WarehouseID'], $data['WarehouseName'], $data['LocationName'], $
 
         if ($stmt->execute()) {
             echo json_encode(["status" => "success", "message" => "Warehouse updated successfully."]);
-            logUserActivity($conn, "Warehouse", "Updated warehouse [$WarehouseID]");
+            logUserActivity($conn, "Warehouse", "Updated warehouse [$WarehouseID]", $WarehouseID);
 
         } else {
             echo json_encode(["status" => "error", "message" => "Failed to update warehouse."]);

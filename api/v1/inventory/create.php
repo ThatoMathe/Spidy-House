@@ -2,12 +2,11 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php'; // Make sure this defines $conn
 
-allowOnlyAdmins('super_admin, manager, staff');
+allowOnlyAdmins('admin, manager, staff');
 
-$input = file_get_contents("php://input");
-$data = json_decode($input, true);
+$data = json_decode(file_get_contents("php://input"), true);
 
-// Check for required fields
+// Validate required fields
 if (
     !isset($data['SupplierID']) ||
     !isset($data['WarehouseID']) ||
@@ -20,23 +19,37 @@ if (
 }
 
 // Prepare values
-$supplierID = $conn->real_escape_string($data['SupplierID']);
-$quantity   = $conn->real_escape_string($data['QuantityAvailable']);
-$minStock   = $conn->real_escape_string($data['MinimumStockLevel']);
-$maxStock   = $conn->real_escape_string($data['MaximumStockLevel']);
-$warehouse  = $conn->real_escape_string($data['WarehouseID']);
+$supplierID = $data['SupplierID'];
+$warehouseID = $data['WarehouseID'];
+$quantity = $data['QuantityAvailable'];
+$minStock = $data['MinimumStockLevel'];
+$maxStock = $data['MaximumStockLevel'];
 
-// Simple SQL query
 $sql = "INSERT INTO inventory (
             ProductID, SupplierID, QuantityAvailable, MinimumStockLevel, MaximumStockLevel, WarehouseID, LastOrderDate
         ) VALUES (
-            NULL, '$supplierID', '$quantity', '$minStock', '$maxStock', '$warehouse', NULL
+            NULL, ?, ?, ?, ?, ?, NULL
         )";
 
-if ($conn->query($sql)) {
-    echo json_encode(["success" => true]);
-    logUserActivity($conn, "Inventory", "Added inventory");
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("iiiii", $supplierID, $quantity, $minStock, $maxStock, $warehouseID);
+
+if ($stmt->execute()) {
+    $productID = $stmt->insert_id; // Get new ProductID
+
+    echo json_encode([
+        "success" => true,
+        "id" => $productID
+    ]);
+
+    logUserActivity($conn, "Inventory", "Added inventory [$productID]", $productID);
 } else {
-    echo json_encode(["success" => false, "message" => $conn->error]);
+    echo json_encode([
+        "success" => false,
+        "message" => $stmt->error
+    ]);
 }
+
+$stmt->close();
+$conn->close();
 ?>

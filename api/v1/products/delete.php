@@ -3,7 +3,7 @@ $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
 // Only allow certain roles to delete
-allowOnlyAdmins('super_admin, manager, staff');
+allowOnlyAdmins('admin, manager, staff');
 
 // Ensure request is POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
@@ -41,7 +41,7 @@ $stmt->bind_param("i", $productID);
 
 if ($stmt->execute()) {
     echo json_encode(['success' => true, 'message' => 'Product deleted successfully.']);
-    logUserActivity($conn, "Products", "Deleted product [ID: $productID]");
+    logUserActivity($conn, "Products", "Deleted product [$productID]", $productID);
 } else {
     echo json_encode(['success' => false, 'message' => 'Failed to delete product.']);
 }

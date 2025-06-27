@@ -33,6 +33,7 @@ if ($method === 'POST') {
         if (password_verify($password, $user['Password'])) {
             unset($user['Password']);
             $_SESSION['user'] = $user;
+            $_SESSION['user']['session_id'] = session_id();
             
             if ($user['is_2fa_enabled'] == 1) {
                 sendTwoFactorCode($conn, $email);
@@ -46,8 +47,7 @@ if ($method === 'POST') {
 
             if (isset($_SESSION['user']['UserID'])) {
                 saveOrUpdateSession($conn, $_SESSION['user']['UserID']);
-                logUserActivity($conn, "Users", "Logged in user [{$_SESSION['user']['UserID']}] [{$_SESSION['user']['UserName']}]");
-
+                logUserActivity($conn, "Users", "Logged in user [{$_SESSION['user']['UserID']}] [{$_SESSION['user']['UserName']}]", $_SESSION['user']['UserID']);
             }
         } else {
             echo json_encode(['loggedIn' => false, 'error' => 'Incorrect password']);

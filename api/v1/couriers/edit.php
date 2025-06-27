@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, admin');
+allowOnlyAdmins('admin, manager');
 
 // Get the JSON body data
 $data = json_decode(file_get_contents("php://input"), true);
@@ -23,8 +23,8 @@ if (isset($data['CourierID'], $data['CourierName'], $data['Address'], $data['Con
         $stmt->bind_param("sssi", $CourierName, $Address, $ContactNumber, $CourierID);
         
         if ($stmt->execute()) {
-            echo json_encode(["status" => "success", "message" => "User updated successfully."]);
-            logUserActivity($conn, "Couriers", "Modified courier");
+            echo json_encode(["status" => "success", "message" => "courier updated successfully."]);
+            logUserActivity($conn, "Couriers", "Modified courier [$CourierID]", $CourierID);
         } else {
             echo json_encode(["status" => "error", "message" => "Failed to update user."]);
         }

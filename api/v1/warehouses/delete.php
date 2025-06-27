@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin');
+allowOnlyAdmins('admin, manager');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents('php://input'), true);
@@ -25,7 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             if ($stmt->affected_rows > 0) {
                 $conn->commit();
                 echo json_encode(["status" => "success", "message" => "Warehouse deleted successfully."]);
-                logUserActivity($conn, "Warehouse", "Deleted warehouse [$WarehouseID]");
+                logUserActivity($conn, "Warehouse", "Deleted warehouse [$WarehouseID]", $WarehouseID);
             } else {
                 $conn->rollback();
                 echo json_encode(["status" => "error", "message" => "Warehouse not found or already deleted."]);

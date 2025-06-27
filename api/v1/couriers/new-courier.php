@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, admin');
+allowOnlyAdmins('admin, manager');
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -17,8 +17,14 @@ if (isset($data['CourierName'], $data['ContactNumber'], $data['Address'])) {
         $stmt->bind_param("sss", $CourierName, $ContactNumber, $Address);
         
         if ($stmt->execute()) {
-            echo json_encode(["status" => "success", "message" => "Courier added successfully."]);
-            logUserActivity($conn, "Couriers", "Added courier");
+            $courier_id = $stmt->insert_id; // Get the new ID
+            echo json_encode([
+                "status" => "success",
+                "message" => "Courier added successfully.",
+                "id" => $courier_id // Return it in the response
+            ]);
+
+            logUserActivity($conn, "Couriers", "Added courier [$CourierName]", $courier_id);
         } else {
             echo json_encode(["status" => "error", "message" => "Failed to add courier."]);
         }

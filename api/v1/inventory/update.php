@@ -4,7 +4,7 @@ require_once $docRoot . '/config/db.php';
 
 header('Content-Type: application/json');
 
-allowOnlyAdmins('super_admin, manager, staff');
+allowOnlyAdmins('admin, manager, staff');
 
 $data = json_decode(file_get_contents("php://input"), true);
 
@@ -39,7 +39,7 @@ $stmt->bind_param("iiiiii", $supplierID, $QuantityAvailable, $minStock, $maxStoc
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true]);
-    logUserActivity($conn, "Inventory", "Modified inventory");
+    logUserActivity($conn, "Inventory", "Modified inventory [$inventoryID]", $inventoryID);
 } else {
     echo json_encode(["success" => false, "message" => $stmt->error]);
 }

@@ -4,7 +4,7 @@ $docRoot = $_SERVER['DOCUMENT_ROOT']; // Document root of the web server
 
 require_once $docRoot . '/config/db.php'; // Include your database connection
 
-allowOnlyAdmins('super_admin, manager, staff');
+allowOnlyAdmins('admin, manager, staff');
 
 function getCategories() {
     global $conn;

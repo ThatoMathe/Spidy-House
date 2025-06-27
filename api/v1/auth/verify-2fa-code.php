@@ -1,6 +1,6 @@
 <?php
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
-require_once $docRoot . '/config/db.php'; // ✅ Connect to database
+require_once $docRoot . '/config/db.php'; // Connect to database
 
 $data = json_decode(file_get_contents('php://input'), true);
 $email = $data['email'] ?? '';
@@ -18,7 +18,7 @@ if (!$email || !$code) {
     exit;
 }
 
-// ✅ Fetch user by email
+// Fetch user by email
 $stmt = $conn->prepare("SELECT * FROM users WHERE Email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
@@ -42,7 +42,7 @@ $update = $conn->prepare("UPDATE users SET is_2fa_verified = 1 WHERE Email = ?")
 $update->bind_param("s", $email);
 $update->execute();
 
-// ✅ Update session
+// Update session
 $_SESSION['user'] = $user;
 $_SESSION['user']['is_2fa_verified'] = 1;
 

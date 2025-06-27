@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin');
+allowOnlyAdmins('admin, manager');
 
 // Get JSON input
 $data = json_decode(file_get_contents('php://input'), true);
@@ -20,7 +20,7 @@ $stmt->bind_param("i", $storeID);
 
 if ($stmt->execute()) {
     echo json_encode(['success' => true, 'message' => 'Store deleted successfully']);
-    logUserActivity($conn, "Stores", "Deleted store [$storeID]");
+    logUserActivity($conn, "Stores", "Deleted store [$storeID]", $storeID);
 } else {
     echo json_encode(['success' => false, 'message' => 'Failed to delete store']);
 }

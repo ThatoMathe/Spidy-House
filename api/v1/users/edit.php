@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, manager');
+allowOnlyAdmins('admin, manager');
 
 // Get the JSON body data
 $data = json_decode(file_get_contents("php://input"), true);
@@ -24,7 +24,7 @@ if (isset($data['UserID'], $data['UserName'], $data['Email'], $data['Role'], $da
         
         if ($stmt->execute()) {
             echo json_encode(["status" => "success", "message" => "User updated successfully."]);
-            logUserActivity($conn, "Users", "Modified user [$userID]");
+            logUserActivity($conn, "Users", "Modified user [$userID]", $userID);
         } else {
             echo json_encode(["status" => "error", "message" => "Failed to update user."]);
         }

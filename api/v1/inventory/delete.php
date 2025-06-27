@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, manager');
+allowOnlyAdmins('admin, manager');
 
 $data = json_decode(file_get_contents("php://input"));
 
@@ -17,7 +17,7 @@ $stmt->bind_param("i", $InventoryID);
 $success = $stmt->execute();
 
 echo json_encode(["success" => $success]);
-logUserActivity($conn, "Inventory", "Deleted inventory");
+logUserActivity($conn, "Inventory", "Deleted inventory [$InventoryID]", $InventoryID);
 
 $stmt->close();
 $conn->close();

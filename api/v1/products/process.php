@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, manager, staff');
+allowOnlyAdmins('admin, manager, staff');
 
 // === VALIDATE REQUIRED FIELDS ===
 $required = ['barcode', 'productName', 'categoryID', 'supplierID', 'QuantityAvailable', 'LastOrderDate', 'inventoryID'];
@@ -98,7 +98,7 @@ echo json_encode([
   "productCode" => $productCode,
   "message" => "Product and inventory updated successfully."
 ]);
-logUserActivity($conn, "Products", "Proccesed product [$productID]");
+logUserActivity($conn, "Products", "Proccesed product [$productID]", $productID);
 
 $conn->close();
 ?>

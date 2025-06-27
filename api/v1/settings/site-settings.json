@@ -1,15 +1,15 @@
 {
-    "api_url": "http:\/\/localhost:8000",
+    "api_url": "https:\/\/spidywarehouse.unaux.com",
     "environment": "development",
-    "site_name": "Spidy Warehouse ok",
+    "site_name": "Spidy Warehouse",
     "tagline": "Powerful Warehouse MS",
-    "refresh_frequency": "6000",
-    "gemini_api": "GEMINI API HERE",
-    "logo_300_url": "\/uploads\/logos\/logo_300.jpeg",
+    "refresh_frequency": "3000",
+    "gemini_api": "AIzaSyA6H7_mxVsyE_AfAy8Id6gEBUHFoK16GbM",
+    "logo_300_url": "\/uploads\/logos\/logo_300.jpg",
     "logo_200_url": "\/uploads\/logos\/logo_200.png",
     "smtp_host": "serv33.registerdomain.net.za",
     "smtp_port": "80780",
-    "smtp_user": "thth",
+    "smtp_user": "ththiuoiu",
     "smtp_pass": "fgjfgjfgj",
     "smtp_secure": "334"
 }

@@ -2,41 +2,54 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, admin');
+allowOnlyAdmins('admin, manager');
+
 
 // Get the JSON body data
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Check if the required data is provided
-if (isset($data['UserName'], $data['Email'], $data['Role'], $data['WarehouseID'])) {
-    $userName = $data['UserName'];
-    $email = $data['Email'];
-    $role = $data['Role'];
-    $warehouseID = $data['WarehouseID'];
+// Validate required fields
+if (
+    isset($data['UserName'], $data['Email'], $data['Password'], $data['Role'], $data['WarehouseID']) &&
+    !empty($data['UserName']) &&
+    !empty($data['Email']) &&
+    !empty($data['Password']) &&
+    !empty($data['Role']) &&
+    !empty($data['WarehouseID'])
+) {
+    $userName = trim($data['UserName']);
+    $email = trim($data['Email']);
+    $password = password_hash($data['Password'], PASSWORD_DEFAULT); // Secure hash
+    $role = trim($data['Role']);
+    $warehouseID = (int) $data['WarehouseID'];
 
-    // Optionally, you can add more fields to update here.
+    // Prepare SQL insert
+    $query = "INSERT INTO users (UserName, Email, Password, Role, WarehouseID) VALUES (?, ?, ?, ?, ?)";
 
-    // SQL query to update user details
-    $query = "INSERT users SET UserName = ?, Email = ?, Role = ?, WarehouseID = ?";
-
-    // Prepare statement
     if ($stmt = $conn->prepare($query)) {
-        $stmt->bind_param("sssi", $userName, $email, $role, $warehouseID);
-        
+        $stmt->bind_param("ssssi", $userName, $email, $password, $role, $warehouseID);
+
         if ($stmt->execute()) {
-            echo json_encode(["status" => "success", "message" => "User updated successfully."]);
-            logUserActivity($conn, "Users", "Added user [$userName] on warehouse [$warehouseID]");
+            $userId = $stmt->insert_id;
+
+            echo json_encode([
+                "status" => "success",
+                "message" => "User added successfully.",
+                "id" => $userId
+            ]);
+
+            logUserActivity($conn, "Users", "Added user [$userName] to warehouse [$warehouseID]", $userId);
         } else {
-            echo json_encode(["status" => "error", "message" => "Failed to update user."]);
+            echo json_encode(["status" => "error", "message" => "Failed to insert user."]);
         }
-        
+
         $stmt->close();
     } else {
-        echo json_encode(["status" => "error", "message" => "Database query failed."]);
+        echo json_encode(["status" => "error", "message" => "Failed to prepare statement."]);
     }
 
     $conn->close();
 } else {
-    echo json_encode(["status" => "error", "message" => "Invalid request."]);
+    echo json_encode(["status" => "error", "message" => "All fields are required."]);
 }
 ?>

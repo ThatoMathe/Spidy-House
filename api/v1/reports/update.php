@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, admin');
+allowOnlyAdmins('admin, manager');
 
 $data = json_decode(file_get_contents("php://input"), true);
 

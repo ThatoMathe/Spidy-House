@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, manager, staff');
+allowOnlyAdmins('admin, manager, staff');
 
 use BotMan\BotMan\BotMan;
 use BotMan\BotMan\BotManFactory;
@@ -87,7 +87,7 @@ switch ($matched) {
             }
             $bot->reply($msg);
         } else {
-            $bot->reply("✅ All stock levels are healthy.");
+            $bot->reply(" All stock levels are healthy.");
         }
         break;
 
@@ -333,7 +333,7 @@ case 'products with no stock':
         }
         $bot->reply($msg);
     } else {
-        $bot->reply("✅ No products are currently out of stock.");
+        $bot->reply(" No products are currently out of stock.");
     }
     break;
 

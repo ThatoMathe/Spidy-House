@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, admin');
+allowOnlyAdmins('admin, manager');
 
 // Check if it's a POST request and contains the 'action' parameter
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

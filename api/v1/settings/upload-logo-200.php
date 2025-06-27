@@ -26,7 +26,7 @@ if (!$imageInfo) {
 $width = $imageInfo[0];
 $height = $imageInfo[1];
 
-// ✅ Check exact dimensions
+// Check exact dimensions
 if ($width != 500 || $height != 200) {
     echo json_encode(['success' => false, 'error' => 'Image must be exactly 200x500']);
     exit;

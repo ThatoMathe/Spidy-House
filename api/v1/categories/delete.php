@@ -1,7 +1,7 @@
 <?php
 require_once $_SERVER['DOCUMENT_ROOT'] . '/config/db.php';
 
-allowOnlyAdmins('super_admin, admin');
+allowOnlyAdmins('admin, manager');
 
 $data = json_decode(file_get_contents("php://input"), true);
 $categoryID = intval($data['CategoryID'] ?? 0);
@@ -16,7 +16,7 @@ $stmt->bind_param("i", $categoryID);
 
 if ($stmt->execute()) {
     echo json_encode(['status' => 'success', 'message' => 'Category deleted']);
-    logUserActivity($conn, "Categories", "Deleted category [$categoryID]");
+    logUserActivity($conn, "Categories", "Deleted category [$categoryID]", $categoryID);
 } else {
     echo json_encode(['status' => 'error', 'message' => 'Delete failed']);
 }

@@ -2,7 +2,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin');
+allowOnlyAdmins('admin, manager');
 
 // Get raw JSON input
 $data = json_decode(file_get_contents('php://input'), true);
@@ -31,7 +31,7 @@ $stmt->bind_param("ssii", $storeName, $storeLocation, $managerID, $storeID);
 
 if ($stmt->execute()) {
     echo json_encode(['success' => true, 'message' => 'Store updated successfully']);
-    logUserActivity($conn, "Stores", "Modified store [$storeID]");
+    logUserActivity($conn, "Stores", "Modified store [$storeID]", $storeID);
 } else {
     echo json_encode(['success' => false, 'message' => 'Update failed']);
 }

@@ -3,7 +3,7 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-allowOnlyAdmins('super_admin, manager');
+allowOnlyAdmins('admin, manager');
 
 // Get Transfer ID from query
 $id = isset($_GET['TransferID']) ? intval($_GET['TransferID']) : 0;
