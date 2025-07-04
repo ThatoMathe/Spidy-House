@@ -3,10 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 27, 2025 at 02:50 PM
+-- Generation Time: Jul 04, 2025 at 04:57 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
-
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -83,10 +82,10 @@ CREATE TABLE `customerorders` (
 --
 
 INSERT INTO `customerorders` (`CustomerOrderID`, `CustomerID`, `ProductID`, `Quantity`) VALUES
-(1, 1, 25, 2),
-(2, 2, 25, 1),
-(3, 1, 25, 3),
-(4, 3, 25, 5);
+(1, 1, 40, 2),
+(2, 2, 41, 1),
+(3, 1, 40, 3),
+(4, 3, 43, 5);
 
 -- --------------------------------------------------------
 
@@ -156,9 +155,10 @@ CREATE TABLE `inventory` (
 --
 
 INSERT INTO `inventory` (`InventoryID`, `ProductID`, `SupplierID`, `QuantityAvailable`, `MinimumStockLevel`, `MaximumStockLevel`, `WarehouseID`, `LastOrderDate`) VALUES
-(2, NULL, NULL, NULL, 5, 52, 1, '2025-05-16 21:44:50'),
-(3, 41, 201, 0, 30, 100, 1, '2025-06-16 11:09:26'),
-(7, 40, 202, 71, 6, 60, 2, '2025-06-04 19:33:37');
+(11, 43, 201, 45, 50, 75, 1, '2025-07-04 01:35:45'),
+(12, 40, 202, 50, 1, 10, 2, '2025-07-04 02:08:54'),
+(13, 41, 201, 0, 1, 10, 2, NULL),
+(14, 44, 201, 5, 8, 18, 1, '2025-07-04 15:06:21');
 
 -- --------------------------------------------------------
 
@@ -179,17 +179,16 @@ CREATE TABLE `notifications` (
 --
 
 INSERT INTO `notifications` (`id`, `title`, `user_id`, `act_id`, `created_at`) VALUES
-(35, 'Users', 9, 9, '2025-06-26 15:16:38'),
-(42, 'Users', 9, 9, '2025-06-26 15:32:44'),
-(43, 'Users', 9, 9, '2025-06-26 17:42:57'),
-(44, 'Users', 9, 9, '2025-06-26 18:00:27'),
-(45, 'Users', 9, 9, '2025-06-26 18:03:56'),
-(47, 'Users', 9, 9, '2025-06-26 18:20:52'),
-(48, 'Users', 9, 9, '2025-06-26 18:20:52'),
-(49, 'Users', 9, 9, '2025-06-26 18:21:04'),
-(50, 'Users', 9, 9, '2025-06-26 18:27:29'),
-(51, 'Users', 9, 9, '2025-06-26 19:04:59'),
-(52, 'Users', 9, 9, '2025-06-27 11:52:44');
+(81, 'Products', 0, 42, '2025-07-04 01:12:09'),
+(84, 'Products', 0, 43, '2025-07-04 01:33:20'),
+(85, 'Orders', 9, 11, '2025-07-04 01:35:45'),
+(89, 'Orders', 0, 12, '2025-07-04 02:08:54'),
+(94, 'Users', 11, 11, '2025-07-04 14:50:55'),
+(96, 'Users', 11, 11, '2025-07-04 14:58:11'),
+(97, 'Inventory', 11, 14, '2025-07-04 15:01:37'),
+(98, 'Products', 11, 44, '2025-07-04 15:04:02'),
+(99, 'Orders', 11, 14, '2025-07-04 15:06:21'),
+(100, 'Users', 12, 12, '2025-07-04 15:26:30');
 
 -- --------------------------------------------------------
 
@@ -215,7 +214,9 @@ CREATE TABLE `products` (
 
 INSERT INTO `products` (`ProductID`, `ProductCode`, `BarCode`, `ProductName`, `ProductDescription`, `OrderID`, `ProductImage`, `CategoryID`, `SupplierID`) VALUES
 (40, 'P40', '23332224444456', 'Black T-Shirt', '', 0, '/uploads/products/product_1750071490_4221.jpeg', 2, 202),
-(41, 'P41', '34333344377377', 'Smart Watch', '', 0, '/uploads/products/product_1750073237_4530.jpeg', 1, 201);
+(41, 'P41', '34333344377377', 'Smart Watch', '', 0, '/uploads/products/product_1750071490_4221.jpeg', 1, 201),
+(43, 'P43', '6576576', 'White Mouse', 'Price R500, comfortable, small', 0, '/uploads/products/product_1750071490_4221.jpeg', 1, 201),
+(44, 'P44', '1234566', 'smart watch', 'testing', 0, '/uploads/products/product_1750071490_4221.jpeg', 1, 201);
 
 -- --------------------------------------------------------
 
@@ -239,9 +240,9 @@ CREATE TABLE `purchasingorders` (
 --
 
 INSERT INTO `purchasingorders` (`OrderID`, `OrderDate`, `OrderQuantity`, `ExpectedDate`, `ActualDate`, `ProductID`, `SupplierID`, `Status`) VALUES
-(1, '2025-04-25 09:00:00', 5, '2025-05-10 00:00:00', '2025-05-09 00:00:00', 40, 201, 'Approved'),
-(2, '2025-04-26 10:00:00', 3, '2025-05-12 00:00:00', '2025-05-11 00:00:00', 41, 202, 'Pending'),
-(3, '2025-06-24 23:59:57', 150, '2025-06-28 00:00:00', '0000-00-00 00:00:00', 41, 201, 'Approved');
+(1, '2025-07-04 01:35:20', 50, '2025-07-24 00:00:00', '2025-07-24 00:00:00', 43, 201, 'Approved'),
+(2, '2025-07-04 02:08:44', 50, '2025-07-16 00:00:00', '2025-07-09 00:00:00', 40, 202, 'Approved'),
+(3, '2025-07-04 15:05:47', 5, '2025-07-07 00:00:00', '2025-07-05 00:00:00', 44, 201, 'Approved');
 
 -- --------------------------------------------------------
 
@@ -289,7 +290,23 @@ INSERT INTO `session` (`SessionID`, `UserID`, `IPAddress`, `Token`, `UserAgent`,
 (23, 5, '192.168.18.246', 'ea2tite5l6em6bp3mkm5vmmt3i', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36', NULL, '2025-06-26 18:06:41'),
 (24, 9, '192.168.18.4', 'rck73gtba2n2j20pij5up425mm', 'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Mobile Safari/537.36', NULL, '2025-06-26 18:21:04'),
 (25, 9, '::1', 'ail9l1ght2ifib8rttefp8em5m', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0', '2025-06-26 19:04:58', '2025-06-26 18:27:28'),
-(26, 9, '::1', 'sjt63iib7v5n7jenobmejstvvm', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0', NULL, '2025-06-27 11:52:44');
+(26, 9, '::1', 'sjt63iib7v5n7jenobmejstvvm', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/137.0.0.0 Safari/537.36 Edg/137.0.0.0', NULL, '2025-06-27 11:52:44'),
+(27, 9, '::1', 'ck3mkejsv13sps79khgtpsn7b2', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-06-30 13:43:52'),
+(28, 9, '::1', '5f4dldqsk1jb22neuhr9nn72pk', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-06-30 21:48:51'),
+(29, 9, '::1', 'necoqu30iovj0ven344aq4s497', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-06-30 21:53:00'),
+(30, 9, '::1', 'jngtdhmee2nahlt9loimtfhm3m', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', '2025-07-03 20:53:56', '2025-07-03 20:26:45'),
+(31, 9, '::1', 'tjrrquli6p6hfiv53fv7binq1o', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', '2025-07-03 20:57:03', '2025-07-03 20:56:48'),
+(32, 9, '::1', 'uq6levo1h1va12jlf3se4gca40', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-07-03 20:57:34'),
+(33, 9, '::1', 'letv6k4f58edt413ftjiokvthd', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-07-03 21:03:01'),
+(34, 9, '::1', 'ql03map04m4carg2lp7ptbktah', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', '2025-07-03 22:29:53', '2025-07-03 21:31:21'),
+(35, 9, '::1', '24rv9jm3d19alnmgevrt0r1jsf', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-07-03 22:52:08'),
+(36, 9, '::1', '3nl12j5oeiisn9gghgo56t1rf5', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-07-03 22:52:28'),
+(37, 9, '::1', 't8vu3isv4se5j3m19eobn6l5gi', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', '2025-07-03 22:57:14', '2025-07-03 22:56:43'),
+(38, 9, '::1', 'b9on0h23ltmc4o2oi82p479fre', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-07-03 23:00:19'),
+(39, 9, '::1', 'iun23schblr8jmfdrtlk1tnihh', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-07-04 02:13:32'),
+(40, 9, '::1', '63dtjd4j3dg1bg4m4p7h5n6t3d', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-07-04 13:19:10'),
+(41, 9, '::1', 'deciol3kb3mhksrso82galr8t6', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-07-04 14:56:39'),
+(42, 11, '::1', '064tnhjkqephhs2tr0rr77kq4s', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/138.0.0.0 Safari/537.36 Edg/138.0.0.0', NULL, '2025-07-04 14:58:11');
 
 -- --------------------------------------------------------
 
@@ -313,7 +330,12 @@ CREATE TABLE `stockreturns` (
 INSERT INTO `stockreturns` (`StockReturnID`, `CustomerOrderID`, `ProductID`, `Quantity`, `ReasonForReturn`, `InventoryID`) VALUES
 (1, 1, 101, 2, 'Defective product', 1001),
 (2, 2, 102, 1, 'Wrong size', 1002),
-(3, NULL, 40, 15, 'Returned from transfer cancellation', 7);
+(3, NULL, 40, 15, 'Returned from transfer cancellation', 7),
+(4, NULL, 40, 5, 'Returned from transfer cancellation', 7),
+(5, NULL, 40, 5, 'Returned from transfer cancellation', 7),
+(6, NULL, 40, 5, 'Returned from transfer cancellation', 7),
+(7, NULL, 40, 5, 'Returned from transfer cancellation', 7),
+(8, 7, 41, 56, 'Order deleted after approval', 3);
 
 -- --------------------------------------------------------
 
@@ -358,7 +380,8 @@ CREATE TABLE `suppliers` (
 INSERT INTO `suppliers` (`SupplierID`, `SupplierName`, `SupplierAddress`, `CreatedDate`) VALUES
 (201, 'Tech Supplies Inc.', '123 Tech Park, Silicon Valley', '2025-05-13 12:01:43'),
 (202, 'Fashion Wholesale', '45 Fashion St, Garment District', '2025-05-13 12:01:43'),
-(203, 'Appliance Traders', '80 Appliance Rd, Home City', '2025-05-13 12:01:43');
+(203, 'Appliance Traders', '80 Appliance Rd, Home City', '2025-05-13 12:01:43'),
+(205, 'test', 'test', '2025-07-04 01:36:33');
 
 -- --------------------------------------------------------
 
@@ -384,7 +407,8 @@ CREATE TABLE `transfers` (
 INSERT INTO `transfers` (`TransferID`, `TransferQuantity`, `SentDate`, `ReceivedDate`, `WarehouseID`, `FromWarehouseID`, `StoreID`, `ProductID`) VALUES
 (1, 100, '2025-05-01 08:00:00', '2025-05-02 09:00:00', 1, 1, NULL, 25),
 (2, 50, '2025-05-03 10:00:00', '2025-05-04 11:00:00', NULL, 1, 2, 26),
-(3, 10, '2025-06-04 20:32:57', '2025-06-12 20:30:00', NULL, 2, 1, 38);
+(3, 10, '2025-06-04 20:32:57', '2025-06-12 20:30:00', NULL, 2, 1, 38),
+(9, 5, '2025-07-04 02:01:49', '2025-07-24 02:00:00', 2, 1, NULL, 43);
 
 -- --------------------------------------------------------
 
@@ -410,7 +434,7 @@ INSERT INTO `useractivity` (`ReportID`, `UserID`, `CreatedAt`, `Description`, `T
 (6, 9, '2025-06-04 18:57:17', 'Modified settings', 'Settings'),
 (7, 9, '2025-06-04 18:57:51', 'Deleted product [34]', 'Products'),
 (8, 9, '2025-06-04 18:58:45', 'Deleted product [28]', 'Products'),
-(9, 9, '2025-06-04 19:05:11', 'Proccesed product [35]', 'Products'),
+(9, 0, '2025-06-04 19:05:11', 'Proccesed product [35]', 'Products'),
 (10, 9, '2025-06-04 19:05:20', 'Deleted product [ID: 35]', 'Products'),
 (11, 9, '2025-06-04 19:06:31', 'Proccesed product [36]', 'Products'),
 (12, 9, '2025-06-04 19:06:41', 'Deleted product [ID: 36]', 'Products'),
@@ -526,7 +550,57 @@ INSERT INTO `useractivity` (`ReportID`, `UserID`, `CreatedAt`, `Description`, `T
 (122, 9, '2025-06-26 19:04:59', 'Logged in user [9] [Makale]', 'Users'),
 (123, 9, '2025-06-27 11:52:44', 'Logged in user [9] [Makale]', 'Users'),
 (124, 9, '2025-06-27 11:58:44', 'Modified settings', 'Settings'),
-(125, 9, '2025-06-27 12:13:13', 'Modified settings', 'Settings');
+(125, 9, '2025-06-27 12:13:13', 'Modified settings', 'Settings'),
+(126, 9, '2025-06-30 13:43:52', 'Logged in user [9] [Makale]', 'Users'),
+(127, 9, '2025-06-30 21:48:51', 'Logged in user [9] [Makale]', 'Users'),
+(128, 9, '2025-06-30 21:52:14', 'Modified user [9]', 'Users'),
+(129, 9, '2025-06-30 21:53:00', 'Logged in user [9] [Demo]', 'Users'),
+(130, 9, '2025-06-30 22:51:25', 'Modified inventory [7]', 'Inventory'),
+(131, 9, '2025-06-30 22:51:34', 'Modified inventory [7]', 'Inventory'),
+(132, 9, '2025-07-03 20:26:45', 'Logged in user [9] [Demo]', 'Users'),
+(133, 9, '2025-07-03 20:53:56', 'Logged in user [9] [Demo]', 'Users'),
+(134, 9, '2025-07-03 20:56:48', 'Logged in user [9] [Demo]', 'Users'),
+(135, 9, '2025-07-03 20:57:03', 'Logged in user [9] [Demo]', 'Users'),
+(136, 9, '2025-07-03 20:57:35', 'Logged in user [9] [Demo]', 'Users'),
+(137, 9, '2025-07-03 20:58:27', 'Modified product [41]', 'Products'),
+(138, 9, '2025-07-03 21:03:01', 'Logged in user [9] [Demo]', 'Users'),
+(139, 9, '2025-07-03 21:05:56', 'Transfer deleted and stock returned to inventory [7]', 'Returns'),
+(140, 9, '2025-07-03 21:31:21', 'Logged in user [9] [Demo]', 'Users'),
+(141, 9, '2025-07-03 22:25:24', 'Logged in user [9] [Demo]', 'Users'),
+(142, 9, '2025-07-03 22:29:53', 'Logged in user [9] [Demo]', 'Users'),
+(143, 9, '2025-07-03 22:39:45', 'Transfer deleted and stock returned to inventory [7]', 'Returns'),
+(144, 9, '2025-07-03 22:52:08', 'Logged in user [9] [Demo]', 'Users'),
+(145, 9, '2025-07-03 22:52:28', 'Logged in user [9] [Demo]', 'Users'),
+(146, 9, '2025-07-03 22:56:43', 'Logged in user [9] [Thabo]', 'Users'),
+(147, 9, '2025-07-03 22:57:14', 'Logged in user [9] [Thabo]', 'Users'),
+(148, 9, '2025-07-03 23:00:19', 'Logged in user [9] [Thabo]', 'Users'),
+(149, 9, '2025-07-03 23:10:27', 'Stock transferred out successfully - Product [40]', 'Returns'),
+(150, 9, '2025-07-03 23:20:33', 'Transfer deleted and stock returned to inventory [7]', 'Returns'),
+(151, 9, '2025-07-03 23:29:18', 'Transfer deleted and stock returned to inventory [7]', 'Returns'),
+(152, 9, '2025-07-03 23:31:13', 'Modified inventory [7]', 'Inventory'),
+(153, 9, '2025-07-04 01:06:06', 'Added inventory [10]', 'Inventory'),
+(154, 9, '2025-07-04 01:12:09', 'Proccesed product [42]', 'Products'),
+(155, 9, '2025-07-04 01:18:10', 'Modified product [42]', 'Products'),
+(156, 9, '2025-07-04 01:18:34', 'Modified settings', 'Settings'),
+(157, 9, '2025-07-04 01:27:01', 'Modified settings', 'Settings'),
+(158, 9, '2025-07-04 01:32:04', 'Added inventory [11]', 'Inventory'),
+(159, 9, '2025-07-04 01:33:20', 'Proccesed product [43]', 'Products'),
+(160, 9, '2025-07-04 01:35:45', 'Order #1 approved and stock updated in inventory #11', 'Orders'),
+(161, 9, '2025-07-04 02:01:49', 'Stock transferred out successfully - Product [43]', 'Returns'),
+(162, 9, '2025-07-04 02:07:36', 'Added inventory [12]', 'Inventory'),
+(163, 9, '2025-07-04 02:07:49', 'Added inventory [13]', 'Inventory'),
+(164, 9, '2025-07-04 02:08:54', 'Order #2 approved and stock updated in inventory #12', 'Orders'),
+(165, 9, '2025-07-04 02:09:46', 'Modified inventory [11]', 'Inventory'),
+(166, 9, '2025-07-04 02:10:05', 'Modified inventory [11]', 'Inventory'),
+(167, 9, '2025-07-04 02:13:32', 'Logged in user [9] [Demo]', 'Users'),
+(168, 9, '2025-07-04 13:19:10', 'Logged in user [9] [Demo]', 'Users'),
+(169, 11, '2025-07-04 14:50:55', 'New registered user [11] [Thabang]', 'Users'),
+(170, 9, '2025-07-04 14:56:39', 'Logged in user [9] [Demo]', 'Users'),
+(171, 11, '2025-07-04 14:58:11', 'Logged in user [11] [Thabang]', 'Users'),
+(172, 11, '2025-07-04 15:01:37', 'Added inventory [14]', 'Inventory'),
+(173, 11, '2025-07-04 15:04:02', 'Proccesed product [44]', 'Products'),
+(174, 11, '2025-07-04 15:06:21', 'Order #3 approved and stock updated in inventory #14', 'Orders'),
+(175, 12, '2025-07-04 15:26:30', 'New registered user [12] [thabo]', 'Users');
 
 -- --------------------------------------------------------
 
@@ -539,23 +613,24 @@ CREATE TABLE `users` (
   `UserName` varchar(100) DEFAULT NULL,
   `Email` text NOT NULL,
   `Password` varchar(200) DEFAULT NULL,
-  `Role` varchar(100) DEFAULT NULL,
+  `Role` enum('admin','manager','staff') DEFAULT 'staff',
+  `WarehouseID` int(11) DEFAULT NULL,
   `is_2fa_enabled` int(1) NOT NULL DEFAULT 0,
   `is_2fa_verified` tinyint(1) NOT NULL DEFAULT 0,
   `two_fa_code` int(6) NOT NULL,
-  `CreatedDate` datetime DEFAULT current_timestamp(),
-  `WarehouseID` int(11) DEFAULT NULL
+  `CreatedDate` datetime DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 --
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`UserID`, `UserName`, `Email`, `Password`, `Role`, `is_2fa_enabled`, `is_2fa_verified`, `two_fa_code`, `CreatedDate`, `WarehouseID`) VALUES
-(5, 'Rivaldo', 'rivaldomakale@gmail.com', '$2y$10$7WCV9pNGE/u0lUgV14U3j.RWpGiOM3SZX2K5e.zDWyBi8l3sq6WNO', 'admin', 0, 0, 873856, '2025-05-12 19:42:20', 2),
-(8, 'joytick', 'joytick.business@gmail.com', NULL, 'admin', 1, 0, 0, '2025-05-13 11:10:39', 2),
-(9, 'Makale', 'thabomakale486@gmail.com', '$2y$10$vR/Cl0IiQp/AUWsvl012SO4N6RXQJn8grX.PLdl1bJ5HrIbEs6z4G', 'admin', 0, 0, 722297, '2025-06-02 18:24:54', 1),
-(10, 'Thabo', 'test@gmail.com', '$2y$10$NPwaagHVfKxbJqdT7ci3zesCN2AkvYA0pLgdwrJjBuq52BAP0NIqq', 'admin', 0, 0, 0, '2025-06-25 23:34:40', 1);
+INSERT INTO `users` (`UserID`, `UserName`, `Email`, `Password`, `Role`, `WarehouseID`, `is_2fa_enabled`, `is_2fa_verified`, `two_fa_code`, `CreatedDate`) VALUES
+(5, 'Demo2', 'test1@gmail.com', '$2y$10$7WCV9pNGE/u0lUgV14U3j.RWpGiOM3SZX2K5e.zDWyBi8l3sq6WNO', 'manager', 2, 0, 0, 0, '2025-05-12 19:42:20'),
+(8, 'Demo3', 'test2@gmail.com', NULL, 'staff', 2, 0, 0, 0, '2025-05-13 11:10:39'),
+(9, 'Demo', 'test@gmail.com', '$2y$10$vR/Cl0IiQp/AUWsvl012SO4N6RXQJn8grX.PLdl1bJ5HrIbEs6z4G', 'admin', 1, 0, 0, 0, '2025-06-02 18:24:54'),
+(11, 'Thabang', 'ta6099@gmail.com', '$2y$10$.Zn06.T8KgaKks3dIjNei.sbPnYmV7WY4hsuut8tINcWwwF9b2O/u', 'admin', 1, 0, 0, 0, '2025-07-04 14:50:55'),
+(12, 'thabo', 'thabo@gmail.com', '$2y$10$4zlRpynTQhi.Jpy.4urDGOVznB08ObIY4B7B2.NsAn0eW4xA1efQ2', 'staff', 1, 0, 0, 0, '2025-07-04 15:26:30');
 
 -- --------------------------------------------------------
 
@@ -723,37 +798,37 @@ ALTER TABLE `deliveries`
 -- AUTO_INCREMENT for table `inventory`
 --
 ALTER TABLE `inventory`
-  MODIFY `InventoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `InventoryID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
 
 --
 -- AUTO_INCREMENT for table `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=53;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=101;
 
 --
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `ProductID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=45;
 
 --
 -- AUTO_INCREMENT for table `purchasingorders`
 --
 ALTER TABLE `purchasingorders`
-  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `OrderID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `session`
 --
 ALTER TABLE `session`
-  MODIFY `SessionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `SessionID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 
 --
 -- AUTO_INCREMENT for table `stockreturns`
 --
 ALTER TABLE `stockreturns`
-  MODIFY `StockReturnID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `StockReturnID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `stores`
@@ -765,25 +840,25 @@ ALTER TABLE `stores`
 -- AUTO_INCREMENT for table `suppliers`
 --
 ALTER TABLE `suppliers`
-  MODIFY `SupplierID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=205;
+  MODIFY `SupplierID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=206;
 
 --
 -- AUTO_INCREMENT for table `transfers`
 --
 ALTER TABLE `transfers`
-  MODIFY `TransferID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `TransferID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `useractivity`
 --
 ALTER TABLE `useractivity`
-  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=126;
+  MODIFY `ReportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=176;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `UserID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `warehouse`
