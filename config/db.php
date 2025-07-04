@@ -1,65 +1,71 @@
 <?php
-ini_set('display_errors', 1); // Prevent errors from being sent as HTML
+// Disable error display in production
+ini_set('display_errors', 0);
 error_reporting(E_ALL);
 
-// Allow CORS from specific origin
+// Define document root
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
-require_once $docRoot . '/vendor/autoload.php'; // Make sure composer autoload is included
+
+// Composer & core includes
+require_once $docRoot . '/vendor/autoload.php';
 require_once $docRoot . '/config/functions.php';
 require_once $docRoot . '/config/session-utils.php';
 
-// Load .env file
 use Dotenv\Dotenv;
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
 
-
+// Load .env securely
 $envFilePath = $docRoot . '/.env';
-
-// Check if the .env file exists
 if (!file_exists($envFilePath)) {
-    // Create an empty .env file
-    file_put_contents($envFilePath, '');
+    file_put_contents($envFilePath, ''); // Create an empty .env file if missing
 }
-
 $dotenv = Dotenv::createImmutable($docRoot);
 $dotenv->safeLoad();
 
-// Get allowed origin from environment
-$allowed_origin = $_ENV['BASE_URL'] ?? ''; 
+// Set secure headers
+header('Content-Type: application/json');
+
+// CORS
+$allowed_origin = $_ENV['BASE_URL'] ?? '';
+$origin = $_SERVER['HTTP_ORIGIN'] ?? '';
 
 if (in_array($_SERVER['REQUEST_METHOD'], ['OPTIONS', 'POST', 'GET', 'DELETE'])) {
-    // check the session
-    if (isset($_SERVER['HTTP_ORIGIN']) && $_SERVER['HTTP_ORIGIN'] === $allowed_origin) {
+    if (!empty($allowed_origin) && $origin === $allowed_origin) {
         header("Access-Control-Allow-Origin: $allowed_origin");
         header("Access-Control-Allow-Methods: GET, POST, OPTIONS, DELETE");
         header("Access-Control-Allow-Headers: Content-Type, Authorization");
         header("Access-Control-Allow-Credentials: true");
+    } else {
+        http_response_code(403);
+        echo json_encode(["error" => "CORS origin not allowed"]);
+        exit();
     }
 }
 
-// Handle preflight (OPTIONS) request
+// Handle OPTIONS (preflight)
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
     http_response_code(200);
     exit();
 }
 
-session_start();
-
-// Connect to MySQL database
-// Get credentials from .env
-$servername = $_ENV['DB_HOST'] ?? 'localhost';
-$username = $_ENV['DB_USER'] ?? 'root';
-$password = $_ENV['DB_PASS'] ?? '';
-$dbname   = $_ENV['DB_NAME'] ?? 'spidy_house';
-
-// Create connection
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-// Check connection
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
+// Start session safely
+if (session_status() === PHP_SESSION_NONE) {
+    session_start();
 }
 
-header('Content-Type: application/json');
+// Connect to DB using environment variables
+$servername = $_ENV['DB_HOST'] ?? 'localhost';
+$username   = $_ENV['DB_USER'] ?? 'root';
+$password   = $_ENV['DB_PASS'] ?? '';
+$dbname     = $_ENV['DB_NAME'] ?? 'spidy_house';
 
+// Secure DB connection
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    error_log("Database connection error: " . $conn->connect_error);
+    http_response_code(500);
+    echo json_encode(["error" => "Database connection failed"]);
+    exit();
+}
+?>
