@@ -1,27 +1,31 @@
 import React, { useState, useEffect } from 'react';
 import Select from 'react-select';
-import 'react-datepicker/dist/react-datepicker.css';
-import 'react-toastify/dist/ReactToastify.css';
 import { toast } from 'react-toastify';
 import { useSettings } from '../../context/SettingsContext';
+import 'react-datepicker/dist/react-datepicker.css';
+import 'react-toastify/dist/ReactToastify.css';
 
 const NewInventory = ({ onClose, onSuccess }) => {
-const { settings } = useSettings();
+  const { settings } = useSettings();
   const [productData, setProductData] = useState({
     supplierID: '',
     WarehouseID: '',
     minStock: 1,
     maxStock: 10,
   });
-    const isDarkMode = document.body.classList.contains("dark-mode");
+
+  const [warehouses, setWarehouses] = useState([]);
+  const [suppliers, setSuppliers] = useState([]);
+  const isDarkMode = document.body.classList.contains("dark-mode");
+
   const selectTheme = (theme) => ({
     ...theme,
     colors: {
       ...theme.colors,
-      neutral0: isDarkMode ? "#2c2c2c" : "#ffffff",      // control background
-      neutral80: isDarkMode ? "#f0f0f0" : "#333333",      // text
-      primary25: isDarkMode ? "#444" : "#f0f8ff",         // option hover
-      primary: isDarkMode ? "#5e81ac" : "#0d6efd",        // highlight
+      neutral0: isDarkMode ? "#2c2c2c" : "#ffffff",
+      neutral80: isDarkMode ? "#f0f0f0" : "#333333",
+      primary25: isDarkMode ? "#444" : "#f0f8ff",
+      primary: isDarkMode ? "#5e81ac" : "#0d6efd",
     },
   });
 
@@ -54,120 +58,111 @@ const { settings } = useSettings();
     }),
   };
 
-  const [warehouses, setWarehouses] = useState([]);
-  const [suppliers, setSuppliers] = useState([]);
-  const [error, setError] = useState('');
+  useEffect(() => {
+    const fetchWarehouses = async () => {
+      try {
+        const res = await fetch(`${settings.api_url}/api/v1/warehouses/display-all.php`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data = await res.json();
+        setWarehouses(data);
+      } catch (err) {
+        toast.error('Failed to load warehouses');
+      }
+    };
 
-useEffect(() => {
-  fetch(`${settings.api_url}/api/v1/warehouses/display-all.php`, {
-    credentials: 'include', // Include cookies/session
-  })
-    .then((res) => res.json())
-    .then((data) => setWarehouses(data))
-    .catch((err) => {
-      console.error('Error fetching warehouses:', err);
-      setError('Failed to load warehouses.');
-    });
+    const fetchSuppliers = async () => {
+      try {
+        const res = await fetch(`${settings.api_url}/api/v1/suppliers/display-all.php`, {
+          method: 'GET',
+          credentials: 'include',
+        });
+        const data = await res.json();
+        setSuppliers(data);
+      } catch (err) {
+        toast.error('Failed to load suppliers');
+      }
+    };
 
-  fetch(`${settings.api_url}/api/v1/suppliers/display-all.php`, {
-    credentials: 'include', // Include cookies/session
-  })
-    .then((res) => res.json())
-    .then((data) => setSuppliers(data))
-    .catch((err) => {
-      console.error('Error fetching suppliers:', err);
-      setError('Failed to load suppliers.');
-    });
-}, []);
+    fetchWarehouses();
+    fetchSuppliers();
+  }, [settings.api_url]);
 
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setProductData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setProductData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const newInventory = {
-    ProductID: null, // Adjust if you are going to select a product
-    SupplierID: productData.supplierID,
-    WarehouseID: productData.WarehouseID,
-    QuantityAvailable: 0,
-    MinimumStockLevel: productData.minStock,
-    MaximumStockLevel: productData.maxStock,
-    LastOrderDate: null,
+    if (!productData.WarehouseID || !productData.supplierID) {
+      toast.error('Please select both Warehouse and Supplier');
+      return;
+    }
+
+    const newInventory = {
+      ProductID: null,
+      SupplierID: productData.supplierID,
+      WarehouseID: productData.WarehouseID,
+      QuantityAvailable: 0,
+      MinimumStockLevel: productData.minStock,
+      MaximumStockLevel: productData.maxStock,
+      LastOrderDate: null,
+    };
+
+    try {
+      const res = await fetch(`${settings.api_url}/api/v1/inventory/create.php`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'include', // ✅ Include cookies/session
+        body: JSON.stringify(newInventory),
+      });
+
+      const result = await res.json();
+      if (result.success) {
+        toast.success('Inventory created successfully!');
+        if (onSuccess) onSuccess();
+        onClose();
+      } else {
+        toast.error(result.message || 'Failed to save inventory.');
+      }
+    } catch (err) {
+      toast.error('An error occurred while saving the inventory.');
+    }
+
   };
 
-  try {
-    const response = await fetch(`${settings.api_url}/api/v1/inventory/create.php`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(newInventory),
-    });
-
-    const result = await response.json();
-
-    if (result.success) {
-      toast.success('Inventory created successfully!');
-      if (typeof onSuccess === 'function') onSuccess(); // <-- trigger reload in parent
-      onClose(); // Close the modal
-    } else {
-      toast.error(result.message || 'Failed to save inventory.');
-    }
-  } catch (error) {
-    console.error('Submission error:', error);
-     toast.error('An error occurred while saving the inventory.');
-  }
-};
-
-
-  const supplierOptions = suppliers.map((sup) => ({
-    value: sup.SupplierID,
-    label: sup.SupplierName,
-  }));
-
-  const warehouseOptions = warehouses.map((wh) => ({
-    value: wh.WarehouseID,
-    label: wh.WarehouseName,
-  }));
-
+  const supplierOptions = suppliers.map(s => ({ value: s.SupplierID, label: s.SupplierName }));
+  const warehouseOptions = warehouses.map(w => ({ value: w.WarehouseID, label: w.WarehouseName }));
 
   return (
-    <>
-<div className="modal show d-block mb-4" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-  <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
-
-        
+    <div className="modal show d-block mb-4" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+      <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div className="modal-content shadow rounded">
           <div className="modal-header text-black">
-              <h5 className="modal-title">New Inventory</h5>
-              <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
-            </div>
+            <h5 className="modal-title">New Inventory</h5>
+            <button type="button" className="btn-close" aria-label="Close" onClick={onClose}></button>
+          </div>
 
+          <form onSubmit={handleSubmit}>
             <div className="modal-body">
               <div className="container">
-                <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                   <label className="form-label">Warehouse</label>
                   <Select
                     name="WarehouseID"
                     options={warehouseOptions}
                     value={warehouseOptions.find(opt => opt.value === productData.WarehouseID)}
-                    onChange={(selectedOption) =>
-                      setProductData({ ...productData, WarehouseID: selectedOption.value })
-                    }
+                    onChange={(opt) => setProductData({ ...productData, WarehouseID: opt.value })}
                     placeholder="Select Warehouse"
-                    isSearchable
                     theme={selectTheme}
                     styles={selectStyles}
                   />
-
                 </div>
 
                 <div className="mb-3">
@@ -176,32 +171,19 @@ useEffect(() => {
                     name="supplierID"
                     options={supplierOptions}
                     value={supplierOptions.find(opt => opt.value === productData.supplierID)}
-                    onChange={(selectedOption) =>
-                      setProductData({ ...productData, supplierID: selectedOption.value })
-                    }
+                    onChange={(opt) => setProductData({ ...productData, supplierID: opt.value })}
                     placeholder="Select Supplier"
-                    isSearchable
                     theme={selectTheme}
                     styles={selectStyles}
                   />
                 </div>
 
-                {/* Minimum Stock */}
                 <div className="mb-3">
                   <label className="form-label">Minimum Stock</label>
                   <div className="input-group">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() =>
-                        setProductData((prev) => ({
-                          ...prev,
-                          minStock: Math.max(1, prev.minStock - 1),
-                        }))
-                      }
-                    >
-                      -
-                    </button>
+                    <button type="button" className="btn btn-outline-secondary" onClick={() =>
+                      setProductData(prev => ({ ...prev, minStock: Math.max(1, prev.minStock - 1) }))
+                    }>-</button>
                     <input
                       type="number"
                       name="minStock"
@@ -211,37 +193,21 @@ useEffect(() => {
                       min="1"
                       required
                     />
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() =>
-                        setProductData((prev) => ({
-                          ...prev,
-                          minStock: prev.minStock + 1,
-                        }))
-                      }
-                    >
-                      +
-                    </button>
+                    <button type="button" className="btn btn-outline-secondary" onClick={() =>
+                      setProductData(prev => ({ ...prev, minStock: prev.minStock + 1 }))
+                    }>+</button>
                   </div>
                 </div>
 
-                {/* Maximum Stock */}
                 <div className="mb-3">
                   <label className="form-label">Maximum Stock</label>
                   <div className="input-group">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() =>
-                        setProductData((prev) => ({
-                          ...prev,
-                          maxStock: Math.max(prev.minStock + 1, prev.maxStock - 1),
-                        }))
-                      }
-                    >
-                      -
-                    </button>
+                    <button type="button" className="btn btn-outline-secondary" onClick={() =>
+                      setProductData(prev => ({
+                        ...prev,
+                        maxStock: Math.max(prev.minStock + 1, prev.maxStock - 1)
+                      }))
+                    }>-</button>
                     <input
                       type="number"
                       name="maxStock"
@@ -251,32 +217,22 @@ useEffect(() => {
                       min={productData.minStock + 1}
                       required
                     />
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      onClick={() =>
-                        setProductData((prev) => ({
-                          ...prev,
-                          maxStock: prev.maxStock + 1,
-                        }))
-                      }
-                    >
-                      +
-                    </button>
+                    <button type="button" className="btn btn-outline-secondary" onClick={() =>
+                      setProductData(prev => ({ ...prev, maxStock: prev.maxStock + 1 }))
+                    }>+</button>
                   </div>
                 </div>
-                </form>
               </div>
             </div>
 
             <div className="modal-footer">
               <button type="submit" className="btn btn-primary">Submit</button>
-              <button className="btn btn-secondary" onClick={onClose}>Close</button>
+              <button type="button" className="btn btn-secondary" onClick={onClose}>Close</button>
             </div>
-          </div>
+          </form>
+        </div>
       </div>
     </div>
-</>
   );
 };
 

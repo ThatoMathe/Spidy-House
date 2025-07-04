@@ -202,43 +202,6 @@ const InventoryView = ({ inventory, onClose, onSuccess }) => {
               <div className="row mb-3">
 
                 <div className="col-md-6 mb-3">
-                  <label className="form-label">Stock</label>
-                  <div className="input-group">
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      disabled={!editable}
-                      onClick={() =>
-                        setFormData(prev => ({
-                          ...prev,
-                          QuantityAvailable: Math.max(1, Number(prev.QuantityAvailable) - 1),
-                        }))
-                      }
-                    >-</button>
-                    <input
-                      type="number"
-                      name="QuantityAvailable"
-                      className="form-control text-center"
-                      value={formData.QuantityAvailable || 0}
-                      onChange={handleChange}
-                      disabled={!editable}
-                      min="1"
-                    />
-                    <button
-                      type="button"
-                      className="btn btn-outline-secondary"
-                      disabled={!editable}
-                      onClick={() =>
-                        setFormData(prev => ({
-                          ...prev,
-                          QuantityAvailable: Number(prev.QuantityAvailable) + 1,
-                        }))
-                      }
-                    >+</button>
-                  </div>
-                </div>
-
-                <div className="col-md-6 mb-3">
                   <label className="form-label">Minimum Stock</label>
                   <div className="input-group">
                     <button

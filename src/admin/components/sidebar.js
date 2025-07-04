@@ -120,7 +120,7 @@ const Sidebar = ({ onClose }) => {
         <Link onClick={onClose} className={`nav-link ${isActive('/admin/purchased-orders')} d-flex justify-content-between align-items-center`} to="/admin/purchased-orders">
           <span className="sidebar-header-text d-flex justify-content-between w-100">
             <span><i className="fas fa-shopping-cart me-2"></i> Purchased Orders</span>
-            {renderBadge('Purchased Orders')}
+            {renderBadge('Orders')}
           </span>
           <i className="fas fa-angle-right"></i>
         </Link>
@@ -144,7 +144,7 @@ const Sidebar = ({ onClose }) => {
         <Link onClick={onClose} className={`nav-link ${isActive('/admin/returns')} d-flex justify-content-between align-items-center`} to="/admin/returns">
           <span className="sidebar-header-text d-flex justify-content-between w-100">
             <span><i className="fas fa-undo-alt me-2"></i> Stock Returns</span>
-            {renderBadge('Stock Returns')}
+            {renderBadge('Returns')}
           </span>
           <i className="fas fa-angle-right"></i>
         </Link>

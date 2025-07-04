@@ -4,7 +4,7 @@ import { useQuery, useMutation, useQueryClient, QueryClient, QueryClientProvider
 const SettingsContext = createContext();
 
 export const useSettings = () => useContext(SettingsContext);
-const apiUrl = 'https://spidywarehouse.unaux.com';
+const apiUrl = 'http://localhost:8000';
 // API calls
 // Fetch general settings from the API
 const fetchSettings = async () => {

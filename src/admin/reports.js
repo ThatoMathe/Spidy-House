@@ -38,7 +38,7 @@ const {
 } = useQuery({
   queryKey: ['userActivity'],
   queryFn: fetchActivity,
-  refetchInterval: settings.refresh_frequency,
+  refetchInterval: Number(settings.refresh_frequency) || 10000,
   staleTime: 30000,
 });
 

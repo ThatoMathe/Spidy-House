@@ -34,7 +34,7 @@ const Categories = () => {
   } = useQuery({
     queryKey: ['categories'],
     queryFn: fetchCategories,
-    refetchInterval: settings.refresh_frequency,
+    refetchInterval: Number(settings.refresh_frequency) || 10000,
     staleTime: 30000,
   });
 

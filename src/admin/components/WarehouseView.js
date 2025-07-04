@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useSettings } from '../../context/SettingsContext';
 
-const WarehouseView = ({ warehouse, onClose, refetch}) => {
+const WarehouseView = ({ warehouse, onClose, refetch }) => {
   const { settings } = useSettings();
   const [editable, setEditable] = useState(false);
   const [formData, setFormData] = useState({});
@@ -19,10 +19,10 @@ const WarehouseView = ({ warehouse, onClose, refetch}) => {
 
   const fetchTotals = async (warehouseID) => {
     try {
-const res = await fetch(`${settings.api_url}/api/v1/warehouses/details.php?WarehouseID=${warehouseID}`, {
-  credentials: 'include' // Include session/cookies
-});
-const data = await res.json();
+      const res = await fetch(`${settings.api_url}/api/v1/warehouses/details.php?WarehouseID=${warehouseID}`, {
+        credentials: 'include' // Include session/cookies
+      });
+      const data = await res.json();
 
       setTotals(data);
     } catch (error) {
@@ -42,14 +42,14 @@ const data = await res.json();
 
   const handleEdit = () => setEditable(true);
   const handleSave = () => {
-fetch(`${settings.api_url}/api/v1/warehouses/edit.php`, {
-  method: 'POST',
-  headers: {
-    'Content-Type': 'application/json',
-  },
-  body: JSON.stringify(formData),
-  credentials: 'include' // Include session/cookies
-})
+    fetch(`${settings.api_url}/api/v1/warehouses/edit.php`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(formData),
+      credentials: 'include' // Include session/cookies
+    })
       .then(res => res.json())
       .then(data => {
         setEditable(false);
@@ -58,25 +58,25 @@ fetch(`${settings.api_url}/api/v1/warehouses/edit.php`, {
       .catch(err => console.error('Error saving data:', err));
   };
 
-    const handleDelete = () => {
+  const handleDelete = () => {
     if (window.confirm('Are you sure you want to delete this warehouse?')) {
       fetch(`${settings.api_url}/api/v1/warehouses/delete.php`, {
         method: 'POST', // Use POST method for deletion
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ 
+        body: JSON.stringify({
           action: 'delete',  // This parameter indicates the delete action
           WarehouseID: formData.WarehouseID // Send the user ID to be deleted
         }),
         credentials: 'include' // Include session/cookies
       })
-      .then(res => res.json())
-      .then(data => {
-        onClose(); // Close the modal after deletion
-        refetch(); // Refresh the users list after deleting
-      })
-      .catch(err => console.error('Error deleting warehouse:', err));
+        .then(res => res.json())
+        .then(data => {
+          onClose(); // Close the modal after deletion
+          refetch(); // Refresh the users list after deleting
+        })
+        .catch(err => console.error('Error deleting warehouse:', err));
     }
   };
 
@@ -87,7 +87,7 @@ fetch(`${settings.api_url}/api/v1/warehouses/edit.php`, {
 
   return (
     <div className="modal show d-block mb-4" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
-  <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
+      <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">
             <h5 className="modal-title">Viewing Warehouse: {formData.WarehouseName}</h5>

@@ -2,14 +2,13 @@ import React, { useEffect, useState } from "react";
 import { useSettings } from '../../context/SettingsContext';
 import { toast } from 'react-toastify';
 
-
 const PurchasedOrderView = ({ purchasedOrder, onClose, onSaved }) => {
-
   const { settings } = useSettings();
   const [orderDetails, setOrderDetails] = useState([]);
   const [status, setStatus] = useState('');
   const [actualDate, setActualDate] = useState('');
   const [saving, setSaving] = useState(false);
+  const [isApprovedFromBackend, setIsApprovedFromBackend] = useState(false);
 
   useEffect(() => {
     if (purchasedOrder?.order_id) {
@@ -21,16 +20,30 @@ const PurchasedOrderView = ({ purchasedOrder, onClose, onSaved }) => {
           setOrderDetails(data || []);
           const first = data?.[0];
           if (first) {
+            setIsApprovedFromBackend(first.Status === 'Approved');
             setStatus(['Pending', 'Approved', 'Rejected'].includes(first.Status) ? first.Status : 'Pending');
             setActualDate(first.ActualDate ? first.ActualDate.split(' ')[0] : '');
           }
         })
-
         .catch(err => console.error("Error fetching data:", err));
     }
   }, [purchasedOrder]);
 
   const handleSave = async () => {
+    if (!actualDate) {
+      toast.error('Please select the actual date.');
+      return;
+    }
+
+    const selected = new Date(actualDate);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0); // Remove time from today for accurate comparison
+
+    if (selected < today) {
+      toast.error('Actual date cannot be in the past.');
+      return;
+    }
+
     setSaving(true);
     try {
       const res = await fetch(`${settings.api_url}/api/v1/purchasedorder/update.php`, {
@@ -46,8 +59,8 @@ const PurchasedOrderView = ({ purchasedOrder, onClose, onSaved }) => {
       const result = await res.json();
       if (result.success) {
         toast.success('Order updated successfully!');
-        if (onSaved) onSaved(); // 🔁 Refresh the list and close modal
-        onClose();
+        if (onSaved) onSaved();
+        onClose(); // ✅ Close modal after save
       } else {
         toast.error(result.message || 'Failed to update order.');
       }
@@ -71,23 +84,23 @@ const PurchasedOrderView = ({ purchasedOrder, onClose, onSaved }) => {
 
       const result = await res.json();
       if (result.success) {
-        toast.success('Order deleted successfully!');
-        if (onSaved) onSaved(); // Refetch + close modal
+        toast.success('Order returned successfully!');
+        if (onSaved) onSaved();
+        onClose();
       } else {
-        toast.error(result.message || 'Failed to delete order.');
+        toast.error(result.message || 'Failed to return order.');
       }
     } catch (error) {
-      toast.error('Error deleting order.');
+      toast.error('Error returning order.');
     }
   };
-
 
   if (!purchasedOrder || orderDetails.length === 0) return null;
 
   const first = orderDetails[0];
 
   return (
-    <div className="modal show d-block mb-4" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}>
+    <div className="modal show d-block mb-4" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0, 0, 0, 0.6)' }}>
       <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
         <div className="modal-content">
           <div className="modal-header">
@@ -107,6 +120,7 @@ const PurchasedOrderView = ({ purchasedOrder, onClose, onSaved }) => {
                   className="form-control"
                   value={actualDate}
                   onChange={(e) => setActualDate(e.target.value)}
+                  disabled={isApprovedFromBackend}
                 />
               </div>
               <div className="col-md-6">
@@ -115,6 +129,7 @@ const PurchasedOrderView = ({ purchasedOrder, onClose, onSaved }) => {
                   className="form-select"
                   value={status}
                   onChange={(e) => setStatus(e.target.value)}
+                  disabled={isApprovedFromBackend}
                 >
                   <option value="Pending">Pending</option>
                   <option value="Approved">Approved</option>
@@ -129,9 +144,9 @@ const PurchasedOrderView = ({ purchasedOrder, onClose, onSaved }) => {
                   <div className="col-md-2 text-center mb-2 mb-md-0">
                     {item.ProductImage ? (
                       <img
-                        src={item.ProductImage}
-                        width="60"
-                        height="60"
+                        src={`${settings.api_url}/${item.ProductImage}`}
+                        width="100"
+                        height="100"
                         className="img-thumbnail"
                         alt={item.ProductName}
                       />
@@ -159,28 +174,30 @@ const PurchasedOrderView = ({ purchasedOrder, onClose, onSaved }) => {
           </div>
 
           <div className="modal-footer d-flex justify-content-between">
-            <button type="button" className="btn btn-danger" onClick={handleDelete}>
-              Delete
+            <button type="button" className="btn btn-secondary ms-auto" onClick={onClose}>
+              Close
             </button>
-            <div>
-              <button type="button" className="btn btn-secondary me-2" onClick={onClose}>
-                Close
-              </button>
-              <button
-                type="button"
-                className="btn btn-success"
-                onClick={handleSave}
-                disabled={saving}
-              >
-                {saving ? 'Saving...' : 'Save Changes'}
-              </button>
-            </div>
+
+            {!isApprovedFromBackend && (
+              <>
+                <button type="button" className="btn btn-danger me-2" onClick={handleDelete}>
+                  Delete
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={handleSave}
+                  disabled={saving}
+                >
+                  {saving ? 'Saving...' : 'Save Changes'}
+                </button>
+              </>
+            )}
           </div>
 
         </div>
       </div>
     </div>
-
   );
 };
 

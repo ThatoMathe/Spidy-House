@@ -6,9 +6,9 @@ import { Autoplay } from 'swiper/modules';
 
 const TeamMembers = () => {
   const team = [
-    { name: 'Thato Mathe', role: 'Team Lead (UI/UX, Testing & Documentation)', image: 'https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png' },
-    { name: 'TThabiso Rivaldo Makale', role: 'Software Developer (Frontend & Backend)', image: 'https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png' },
-    { name: 'Thabo Ronaldo Makale', role: 'Software Developer (Frontend & Backend)', image: 'https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png' },
+    { name: 'Thato Mathe', role: 'Team Lead (Testing & Documentation)', image: 'https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png' },
+    { name: 'Thabiso Rivaldo Makale', role: 'Software Developer (Frontend Developer)', image: 'https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png' },
+    { name: 'Thabo Ronaldo Makale', role: 'Software Developer (Backend Developer)', image: 'https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png' },
     { name: 'Tapiwanashe Mtombeni', role: 'Database Analyst (Design & Integration)', image: 'https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png' },
     { name: 'Bongane Matewela', role: 'IT Specialist (Tech Support & Deployment)', image: 'https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png' },
     { name: 'Boitumelo Shalang ', role: 'Security Analyst (AI Integration & Logic)', image: 'https://cdn.pixabay.com/photo/2023/02/18/11/00/icon-7797704_1280.png' },

@@ -9,7 +9,7 @@ const AddTransfer = ({ onClose, refetch }) => {
     const modalRef = useRef(null);
     const [form, setForm] = useState({
         TransferID: '',
-        TransferQuantity: 0,
+        TransferQuantity: '',
         ReceivedDate: '',
         FromWarehouseID: '',
         ProductID: '',
@@ -20,25 +20,21 @@ const AddTransfer = ({ onClose, refetch }) => {
     const [error, setError] = useState('');
     const isDarkMode = document.body.classList.contains('dark-mode');
 
-    // Allow closing on outside click
-    const handleOutsideClick = (e) => {
-        if (modalRef.current && !modalRef.current.contains(e.target)) {
-            onClose?.();
-        }
-    };
-
-    // Allow closing on ESC key
     useEffect(() => {
         document.addEventListener('mousedown', handleOutsideClick);
-        const handleEsc = (e) => {
-            if (e.key === 'Escape') onClose?.();
-        };
+        const handleEsc = (e) => { if (e.key === 'Escape') onClose?.(); };
         document.addEventListener('keydown', handleEsc);
         return () => {
             document.removeEventListener('mousedown', handleOutsideClick);
             document.removeEventListener('keydown', handleEsc);
         };
     }, []);
+
+    const handleOutsideClick = (e) => {
+        if (modalRef.current && !modalRef.current.contains(e.target)) {
+            onClose?.();
+        }
+    };
 
     const selectTheme = (theme) => ({
         ...theme,
@@ -95,9 +91,21 @@ const AddTransfer = ({ onClose, refetch }) => {
 
     const mutation = useMutation({
         mutationFn: async () => {
+            if (form.FromWarehouseID && form.WarehouseID && form.FromWarehouseID === form.WarehouseID) {
+                toast.error("From and To warehouse cannot be the same.");
+                throw new Error("Same warehouse");
+            }
+
+            const now = new Date();
+            const selectedDate = new Date(form.ReceivedDate);
+            if (isNaN(selectedDate.getTime()) || selectedDate < now) {
+                toast.error("Please select a valid future date for Received Date.");
+                throw new Error("Invalid date");
+            }
+
             const formData = new FormData();
             Object.entries(form).forEach(([key, value]) => {
-                if (value) formData.append(key, value);
+                if (value !== '') formData.append(key, value);
             });
 
             const res = await fetch(`${settings.api_url}/api/v1/transfers/new.php`, {
@@ -138,17 +146,11 @@ const AddTransfer = ({ onClose, refetch }) => {
                                 <Select
                                     name="ProductID"
                                     options={products.map(p => ({ value: p.ProductID, label: p.ProductName }))}
-                                    value={
-                                        products.find(p => p.ProductID === form.ProductID)
-                                            ? {
-                                                value: form.ProductID,
-                                                label: products.find(p => p.ProductID === form.ProductID)?.ProductName
-                                            }
-                                            : null
-                                    }
+                                    value={products.find(p => p.ProductID === form.ProductID) ? { value: form.ProductID, label: products.find(p => p.ProductID === form.ProductID)?.ProductName } : null}
                                     onChange={(selected) => {
-                                        setForm({ ...form, ProductID: selected.value });
-                                        setError(''); // clear any previous error
+                                        const selectedProduct = products.find(p => p.ProductID === selected.value);
+                                        setForm({ ...form, ProductID: selected.value, FromWarehouseID: selectedProduct?.WarehouseID || '' });
+                                        setError('');
                                     }}
                                     styles={selectStyles}
                                     theme={selectTheme}
@@ -156,14 +158,7 @@ const AddTransfer = ({ onClose, refetch }) => {
                             </div>
 
                             <div className="mb-3">
-                                <label className="form-label">
-                                    Transfer Quantity
-                                    {form.ProductID && (
-                                        <span className="text-muted ms-2">
-                                            (Available: {products.find(p => p.ProductID === form.ProductID)?.QuantityAvailable || 0})
-                                        </span>
-                                    )}
-                                </label>
+                                <label className="form-label">Transfer Quantity {form.ProductID && <span className="text-muted ms-2">(Available: {products.find(p => p.ProductID === form.ProductID)?.QuantityAvailable || 0})</span>}</label>
                                 <input
                                     type="number"
                                     name="TransferQuantity"
@@ -183,7 +178,6 @@ const AddTransfer = ({ onClose, refetch }) => {
                                     required
                                 />
                             </div>
-
 
                             <div className="mb-3">
                                 <label className="form-label">Expected Date</label>
@@ -230,15 +224,12 @@ const AddTransfer = ({ onClose, refetch }) => {
                                 )}
                             </div>
 
-                            {error && <div className="alert alert-danger">{error}</div>}
-
+                           
                             <div className="d-flex justify-content-between">
                                 <button type="submit" className="btn btn-primary" disabled={mutation.isLoading}>
                                     {mutation.isLoading ? 'Saving...' : 'Add Transfer'}
                                 </button>
-                                <button type="button" className="btn btn-secondary" onClick={onClose}>
-                                    Cancel
-                                </button>
+                                <button type="button" className="btn btn-secondary" onClick={onClose}>Cancel</button>
                             </div>
 
                         </form>

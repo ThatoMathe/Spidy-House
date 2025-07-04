@@ -31,7 +31,7 @@ const PurchasedOrders = () => {
   } = useQuery({
     queryKey: ['purchasedOrders'],
     queryFn: fetchPurchasedOrders,
-    refetchInterval: settings.refresh_frequency,
+    refetchInterval: Number(settings.refresh_frequency) || 10000,
     staleTime: 30000,
   });
 

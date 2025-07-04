@@ -35,7 +35,7 @@ const Stores = () => {
   } = useQuery({
     queryKey: ['stores'],
     queryFn: fetchStores,
-    refetchInterval: settings.refresh_frequency,
+    refetchInterval: Number(settings.refresh_frequency) || 10000,
     staleTime: 30000,
   });
 

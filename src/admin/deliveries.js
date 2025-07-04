@@ -25,7 +25,7 @@ const Deliveries = () => {
   } = useQuery({
     queryKey: ['deliveries'],
     queryFn: fetchDeliveries,
-    refetchInterval: settings.refresh_frequency, // refresh every 60 seconds (optional)
+    refetchInterval: Number(settings.refresh_frequency) || 10000, // refresh every 60 seconds (optional)
     staleTime: 30000, // data considered fresh for 30 seconds
   });
 

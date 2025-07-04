@@ -35,7 +35,7 @@ const Inventory = () => {
   } = useQuery({
     queryKey: ['inventory'],
     queryFn: fetchInventory,
-    refetchInterval: settings.refresh_frequency,
+    refetchInterval: Number(settings.refresh_frequency) || 10000,
     staleTime: 30000,
   });
 
@@ -125,61 +125,70 @@ const Inventory = () => {
               </tr>
             </thead>
             <tbody>
-              {filteredInventory.map((product) => {
-                const stock = parseInt(product.QuantityAvailable ?? 0);
-                const min = parseInt(product.MinimumStockLevel ?? 0);
-                const max = parseInt(product.MaximumStockLevel ?? 999999);
+              {filteredInventory.length === 0 && !isLoading ? (
+                <tr>
+                  <td colSpan="5" className="text-muted text-center">
+                    No inventory items found.
+                  </td>
+                </tr>
+              ) : (
+                filteredInventory.map((product) => {
+                  const stock = parseInt(product.QuantityAvailable ?? 0);
+                  const min = parseInt(product.MinimumStockLevel ?? 0);
+                  const max = parseInt(product.MaximumStockLevel ?? 999999);
 
-                let stockLabel = null;
-                if (stock === 0) stockLabel = <small style={{ color: "red" }}>Attention</small>;
-                else if (stock < min) stockLabel = <small style={{ color: "orange" }}>Low Stock</small>;
-                else if (stock > max) stockLabel = <small style={{ color: "blue" }}>Overload</small>;
+                  let stockLabel = null;
+                  if (stock === 0) stockLabel = <small style={{ color: "red" }}>Attention</small>;
+                  else if (stock < min) stockLabel = <small style={{ color: "orange" }}>Low Stock</small>;
+                  else if (stock > max) stockLabel = <small style={{ color: "blue" }}>Overload</small>;
 
-                return (
-                  <tr key={product.InventoryID} className="text-nowrap">
-                    <td>
-                      {product.ProductName ? (
-                        <>
-                          <span>{product.ProductName}</span>
-                          <hr className="m-0 p-0" />
-                          <small className="text-muted">{product.BarCode ?? '-'}</small>
-                        </>
-                      ) : (
-                        <span style={{ color: "red" }}>Not Captured</span>
-                      )}
-                    </td>
-                    <td>
-                      {stock}
-                      {stockLabel && (
-                        <>
-                          <hr className="m-0 p-0" />
-                          {stockLabel}
-                        </>
-                      )}
-                    </td>
-                    <td>{product.SupplierName || <span style={{ color: "red" }}>N/A</span>}</td>
-                    <td>{product.WarehouseName || <span style={{ color: "red" }}>N/A</span>}</td>
-                    <td>
-                      {!product.ProductName ? (
-                        <Link className="btn btn-sm btn-success" to={`/admin/products/processing?id=${product.InventoryID}`}>
-                          Process
-                        </Link>
-                      ) :
-                        <button
-                          className="btn btn-sm btn-primary me-2"
-                          onClick={() => {
-                            setSelectedInventory(product);
-                            setShowNewInventory(false);
-                          }}
-                        >
-                          More info
-                        </button>
-                      }
-                    </td>
-                  </tr>
-                );
-              })}
+                  return (
+                    <tr key={product.InventoryID} className="text-nowrap">
+                      <td>
+                        {product.ProductName ? (
+                          <>
+                            <span>{product.ProductName}</span>
+                            <hr className="m-0 p-0" />
+                            <small className="text-muted">{product.BarCode ?? '-'}</small>
+                          </>
+                        ) : (
+                          <span style={{ color: "red" }}>Not Captured</span>
+                        )}
+                      </td>
+                      <td>
+                        {stock}
+                        {stockLabel && (
+                          <>
+                            <hr className="m-0 p-0" />
+                            {stockLabel}
+                          </>
+                        )}
+                      </td>
+                      <td>{product.SupplierName || <span style={{ color: "red" }}>N/A</span>}</td>
+                      <td>{product.WarehouseName || <span style={{ color: "red" }}>N/A</span>}</td>
+                      <td>
+                        {!product.ProductName ? (
+                          <Link className="btn btn-sm btn-success" to={`/admin/products/processing?id=${product.InventoryID}`}>
+                            Process
+                          </Link>
+                        ) : (
+                          <button
+                            className="btn btn-sm btn-primary me-2"
+                            onClick={() => {
+                              setSelectedInventory(product);
+                              setShowNewInventory(false);
+                            }}
+                          >
+                            More info
+                          </button>
+                        )}
+                      </td>
+                    </tr>
+                  );
+                })
+              )}
             </tbody>
+
           </table>
         </div>
 

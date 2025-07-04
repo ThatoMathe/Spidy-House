@@ -42,7 +42,7 @@ const Dashboard = () => {
       if (!res.ok) throw new Error('Failed to fetch dashboard stats');
       return res.json();
     },
-    refetchInterval: settings.refresh_frequency,
+    refetchInterval: Number(settings.refresh_frequency) || 10000,
     staleTime: 30000,
   });
 

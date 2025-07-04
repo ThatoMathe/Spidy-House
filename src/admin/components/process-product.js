@@ -66,12 +66,12 @@ const ProcessProduct = ({ barcode, inventory, onCancel }) => {
   const { data: categories = [] } = useQuery({
     queryKey: ['categories'],
     queryFn: async () => {
-           
-const res = await fetch(`${settings.api_url}/api/v1/categories/display-all.php`, {
-  credentials: 'include' // Include session/cookies
-});
-if (!res.ok) throw new Error('Failed to fetch categories');
-return res.json();
+
+      const res = await fetch(`${settings.api_url}/api/v1/categories/display-all.php`, {
+        credentials: 'include' // Include session/cookies
+      });
+      if (!res.ok) throw new Error('Failed to fetch categories');
+      return res.json();
 
     },
     onError: (err) => {
@@ -101,11 +101,11 @@ return res.json();
       formData.append('QuantityAvailable', productData.productQuantity);
       formData.append('LastOrderDate', new Date().toISOString().slice(0, 19).replace('T', ' '));
 
-const res = await fetch(`${settings.api_url}/api/v1/products/process.php`, {
-  method: 'POST',
-  body: formData,
-  credentials: 'include' // Include session/cookies
-});
+      const res = await fetch(`${settings.api_url}/api/v1/products/process.php`, {
+        method: 'POST',
+        body: formData,
+        credentials: 'include' // Include session/cookies
+      });
 
 
       if (!res.ok) throw new Error("Network response was not ok");
@@ -162,156 +162,156 @@ const res = await fetch(`${settings.api_url}/api/v1/products/process.php`, {
     return <div className="text-danger p-4">Invalid inventory data. Supplier or Inventory ID missing.</div>;
   }
 
-return (
-  <div
-    className="modal show d-block"
-    tabIndex="-1"
-    style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
-    role="dialog"
-  >
-    <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
-      <div className="modal-content shadow">
-        <div className="modal-header">
-          <h5 className="modal-title">Process Product</h5>
-          <button type="button" className="btn-close" onClick={handleCancel}></button>
-        </div>
-        <div className="modal-body">
-    <div className='Container'>
-      <p>Scanned Barcode: <strong>{barcode}</strong></p>
-
-      {mutation.isLoading && <p>Submitting...</p>}
-      {mutation.isError && <p className="text-danger">{error}</p>}
-      {offlineMessage && <p className="text-warning fw-bold">{offlineMessage}</p>}
-
-      <form
-onSubmit={(e) => {
-  e.preventDefault();
-  if (!mutation.isLoading) {
-    if (!navigator.onLine) {
-      onCancel?.();
-      toast.info('Saved. Will sync when online.');
-    }
-    mutation.mutate();
-  }
-}}
-
-        className='mt-4'
-      >
-        <input type='hidden' name='barcode' value={productData.barcode} readOnly />
-
-        <div className='mb-3'>
-          <label className='form-label'>Product Name</label>
-          <input
-            type='text'
-            name='productName'
-            className='form-control'
-            value={productData.productName}
-            onChange={handleChange}
-            required
-          />
-        </div>
-
-        <div className='mb-3'>
-          <label className='form-label'>Category</label>
-          <Select
-            name='categoryID'
-            options={categoryOptions}
-            value={categoryOptions.find(opt => opt.value === productData.categoryID)}
-            onChange={(selectedOption) =>
-              setProductData({ ...productData, categoryID: selectedOption.value })
-            }
-            placeholder="Select Category"
-            isSearchable
-            theme={selectTheme}
-            styles={selectStyles}
-          />
-        </div>
-
-        <div className='mb-3'>
-          <label className='form-label'>Product Description</label>
-          <textarea
-            name='productDescription'
-            className='form-control'
-            rows='3'
-            value={productData.productDescription}
-            onChange={handleChange}
-          ></textarea>
-        </div>
-
-        <div className='mb-3'>
-          <label className='form-label'>Quantity</label>
-          <div className='input-group'>
-            <button
-              type='button'
-              className='btn btn-outline-secondary'
-              style={{ zIndex: '0' }}
-              onClick={() =>
-                setProductData((prev) => ({
-                  ...prev,
-                  productQuantity: Math.max(1, prev.productQuantity - 1),
-                }))
-              }
-            >
-              -
-            </button>
-            <input
-              type='number'
-              name='productQuantity'
-              className='form-control text-center'
-              value={productData.productQuantity}
-              onChange={handleChange}
-              min='1'
-              required
-            />
-            <button
-              type='button'
-              className='btn btn-outline-secondary'
-              style={{ zIndex: '0' }}
-              onClick={() =>
-                setProductData((prev) => ({
-                  ...prev,
-                  productQuantity: prev.productQuantity + 1,
-                }))
-              }
-            >
-              +
-            </button>
+  return (
+    <div
+      className="modal show d-block"
+      tabIndex="-1"
+      style={{ backgroundColor: 'rgba(0, 0, 0, 0.5)' }}
+      role="dialog"
+    >
+      <div className="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div className="modal-content shadow">
+          <div className="modal-header">
+            <h5 className="modal-title">Process Product</h5>
+            <button type="button" className="btn-close" onClick={handleCancel}></button>
           </div>
-        </div>
+          <div className="modal-body">
+            <div className='Container'>
+              <p>Scanned Barcode: <strong>{barcode}</strong></p>
 
-        <div className='mb-3'>
-          <label className='form-label'>Product Image</label>
-          <input
-            type='file'
-            name='productImage'
-            className='form-control'
-            accept='image/*'
-            onChange={handleImageChange}
-          />
-        </div>
+              {mutation.isLoading && <p>Submitting...</p>}
+              {mutation.isError && <p className="text-danger">{error}</p>}
+              {offlineMessage && <p className="text-warning fw-bold">{offlineMessage}</p>}
 
-        <div className='d-flex justify-content-between'>
-          <button
-  type='submit'
-  className='btn btn-primary'
-  disabled={mutation.isLoading}
->
-  {mutation.isLoading ? 'Saving...' : 'Save Product'}
-</button>
+              <form
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  if (!mutation.isLoading) {
+                    if (!navigator.onLine) {
+                      onCancel?.();
+                      toast.info('Saved. Will sync when online.');
+                    }
+                    mutation.mutate();
+                  }
+                }}
 
-          <button type='button' className='btn btn-secondary' onClick={handleCancel}>Cancel</button>
-        </div>
-      </form>
+                className='mt-4'
+              >
+                <input type='hidden' name='barcode' value={productData.barcode} readOnly />
 
-      {error && <p style={{ color: 'red' }}>{error}</p>}
-    </div>
+                <div className='mb-3'>
+                  <label className='form-label'>Product Name</label>
+                  <input
+                    type='text'
+                    name='productName'
+                    className='form-control'
+                    value={productData.productName}
+                    onChange={handleChange}
+                    required
+                  />
+                </div>
 
-    
+                <div className='mb-3'>
+                  <label className='form-label'>Category</label>
+                  <Select
+                    name='categoryID'
+                    options={categoryOptions}
+                    value={categoryOptions.find(opt => opt.value === productData.categoryID)}
+                    onChange={(selectedOption) =>
+                      setProductData({ ...productData, categoryID: selectedOption.value })
+                    }
+                    placeholder="Select Category"
+                    isSearchable
+                    theme={selectTheme}
+                    styles={selectStyles}
+                  />
+                </div>
+
+                <div className='mb-3'>
+                  <label className='form-label'>Product Description</label>
+                  <textarea
+                    name='productDescription'
+                    className='form-control'
+                    rows='3'
+                    value={productData.productDescription}
+                    onChange={handleChange}
+                  ></textarea>
+                </div>
+
+                {/* <div className='mb-3'>
+                  <label className='form-label'>Quantity</label>
+                  <div className='input-group'>
+                    <button
+                      type='button'
+                      className='btn btn-outline-secondary'
+                      style={{ zIndex: '0' }}
+                      onClick={() =>
+                        setProductData((prev) => ({
+                          ...prev,
+                          productQuantity: Math.max(1, prev.productQuantity - 1),
+                        }))
+                      }
+                    >
+                      -
+                    </button>
+                    <input
+                      type='number'
+                      name='productQuantity'
+                      className='form-control text-center'
+                      value={productData.productQuantity}
+                      onChange={handleChange}
+                      min='1'
+                      required
+                    />
+                    <button
+                      type='button'
+                      className='btn btn-outline-secondary'
+                      style={{ zIndex: '0' }}
+                      onClick={() =>
+                        setProductData((prev) => ({
+                          ...prev,
+                          productQuantity: prev.productQuantity + 1,
+                        }))
+                      }
+                    >
+                      +
+                    </button>
+                  </div>
+                </div> */}
+
+                <div className='mb-3'>
+                  <label className='form-label'>Product Image</label>
+                  <input
+                    type='file'
+                    name='productImage'
+                    className='form-control'
+                    accept='image/*'
+                    onChange={handleImageChange}
+                  />
+                </div>
+
+                <div className='d-flex justify-content-between'>
+                  <button
+                    type='submit'
+                    className='btn btn-primary'
+                    disabled={mutation.isLoading}
+                  >
+                    {mutation.isLoading ? 'Saving...' : 'Save Product'}
+                  </button>
+
+                  <button type='button' className='btn btn-secondary' onClick={handleCancel}>Cancel</button>
+                </div>
+              </form>
+
+              {error && <p style={{ color: 'red' }}>{error}</p>}
+            </div>
+
+
+          </div>
         </div>
       </div>
     </div>
-  </div>
-);
+  );
 
 };
 
