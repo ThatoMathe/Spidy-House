@@ -24,7 +24,6 @@ if (isset($_GET['message'])) {
 }
 
 
-
 // Log input
 file_put_contents('botman_log.txt', file_get_contents('php://input') . PHP_EOL, FILE_APPEND);
 

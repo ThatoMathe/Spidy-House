@@ -10,7 +10,6 @@ $data = json_decode(file_get_contents("php://input"), true);
 if (
     !isset($data['SupplierID']) ||
     !isset($data['WarehouseID']) ||
-    !isset($data['QuantityAvailable']) ||
     !isset($data['MinimumStockLevel']) ||
     !isset($data['MaximumStockLevel'])
 ) {
@@ -21,18 +20,17 @@ if (
 // Prepare values
 $supplierID = $data['SupplierID'];
 $warehouseID = $data['WarehouseID'];
-$quantity = $data['QuantityAvailable'];
 $minStock = $data['MinimumStockLevel'];
 $maxStock = $data['MaximumStockLevel'];
 
 $sql = "INSERT INTO inventory (
             ProductID, SupplierID, QuantityAvailable, MinimumStockLevel, MaximumStockLevel, WarehouseID, LastOrderDate
         ) VALUES (
-            NULL, ?, ?, ?, ?, ?, NULL
+            NULL, ?, 0, ?, ?, ?, NULL
         )";
 
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("iiiii", $supplierID, $quantity, $minStock, $maxStock, $warehouseID);
+$stmt->bind_param("iiii", $supplierID, $minStock, $maxStock, $warehouseID);
 
 if ($stmt->execute()) {
     $productID = $stmt->insert_id; // Get new ProductID

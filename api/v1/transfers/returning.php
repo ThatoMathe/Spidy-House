@@ -39,9 +39,9 @@ $quantity = $transfer['TransferQuantity'];
 $warehouseId = $transfer['ReturnToWarehouseID'];
 
 // 2. Check if inventory record exists
-$checkSql = "SELECT InventoryID FROM inventory WHERE ProductID = ? AND WarehouseID = ? LIMIT 1";
+$checkSql = "SELECT InventoryID FROM inventory WHERE ProductID = ? LIMIT 1";
 $checkStmt = $conn->prepare($checkSql);
-$checkStmt->bind_param("ii", $productId, $warehouseId);
+$checkStmt->bind_param("i", $productId);
 $checkStmt->execute();
 $checkResult = $checkStmt->get_result();
 $inventoryRow = $checkResult->fetch_assoc();

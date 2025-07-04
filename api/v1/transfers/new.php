@@ -22,7 +22,7 @@ $sentDate = date('Y-m-d H:i:s');
 $warehouseID = !empty($_POST['WarehouseID']) ? (int) $_POST['WarehouseID'] : null;
 $storeID = !empty($_POST['StoreID']) ? (int) $_POST['StoreID'] : null;
 
-// Check stock availability
+// Check stock availability in source warehouse
 $check = $conn->prepare("SELECT QuantityAvailable FROM inventory WHERE ProductID = ? AND WarehouseID = ?");
 $check->bind_param("ii", $productID, $fromWarehouseID);
 $check->execute();
@@ -35,53 +35,22 @@ if ($availableQty < $quantity) {
     exit;
 }
 
-// Insert into transfers table
+// Record transfer (log only)
 $insert = $conn->prepare("INSERT INTO transfers (TransferQuantity, SentDate, ReceivedDate, WarehouseID, FromWarehouseID, StoreID, ProductID) VALUES (?, ?, ?, ?, ?, ?, ?)");
-$insert->bind_param(
-    "issiiii",
-    $quantity,
-    $sentDate,
-    $receivedDate,
-    $warehouseID,
-    $fromWarehouseID,
-    $storeID,
-    $productID
-);
+$insert->bind_param("issiiii", $quantity, $sentDate, $receivedDate, $warehouseID, $fromWarehouseID, $storeID, $productID);
 if (!$insert->execute()) {
     echo json_encode(['success' => false, 'message' => 'Failed to save transfer']);
     exit;
 }
 $insert->close();
 
-// Update inventory: subtract from source
+// Subtract from source inventory only
 $updateFrom = $conn->prepare("UPDATE inventory SET QuantityAvailable = QuantityAvailable - ? WHERE ProductID = ? AND WarehouseID = ?");
 $updateFrom->bind_param("iii", $quantity, $productID, $fromWarehouseID);
 $updateFrom->execute();
 $updateFrom->close();
 
-// Optional: add to destination warehouse
-if ($warehouseID) {
-    // Check if inventory entry exists
-    $checkInv = $conn->prepare("SELECT InventoryID FROM inventory WHERE ProductID = ? AND WarehouseID = ?");
-    $checkInv->bind_param("ii", $productID, $warehouseID);
-    $checkInv->execute();
-    $checkInv->store_result();
-
-    if ($checkInv->num_rows > 0) {
-        // Update existing
-        $updateTo = $conn->prepare("UPDATE inventory SET QuantityAvailable = QuantityAvailable + ? WHERE ProductID = ? AND WarehouseID = ?");
-        $updateTo->bind_param("iii", $quantity, $productID, $warehouseID);
-        $updateTo->execute();
-        $updateTo->close();
-    } else {
-        // Insert new
-        $insertTo = $conn->prepare("INSERT INTO inventory (ProductID, QuantityAvailable, WarehouseID) VALUES (?, ?, ?)");
-        $insertTo->bind_param("iii", $productID, $quantity, $warehouseID);
-        $insertTo->execute();
-        $insertTo->close();
-    }
-    $checkInv->close();
-}
-
-echo json_encode(['success' => true, 'message' => 'Transfer added successfully']);
+// Do NOT add anything to the destination warehouse inventory
+logUserActivity($conn, "Returns", "Stock transferred out successfully - Product [$productID]", $productID);
+echo json_encode(['success' => true, 'message' => 'Stock transferred out successfully (no receiving update)']);
 ?>

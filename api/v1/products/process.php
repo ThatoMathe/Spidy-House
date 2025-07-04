@@ -21,7 +21,8 @@ $orderID = isset($_POST['orderID']) ? intval($_POST['orderID']) : null;
 $categoryID = intval($_POST['categoryID']);
 $supplierID = intval($_POST['supplierID']);
 $inventoryID = intval($_POST['inventoryID']);
-$quantity = intval($_POST['QuantityAvailable']);
+// $quantity = intval($_POST['QuantityAvailable']);
+$quantity = 0;
 $lastOrderDate = $_POST['LastOrderDate'];
 
 // === IMAGE UPLOAD ===
@@ -36,7 +37,7 @@ if (isset($_FILES['productImage']) && $_FILES['productImage']['error'] === UPLOA
   $fullPath = $uploadDir . $filename;
 
   if (move_uploaded_file($_FILES['productImage']['tmp_name'], $fullPath)) {
-    $imagePath = $filename;
+    $imagePath = '/uploads/products/'.$filename;
   } else {
     echo json_encode(["success" => false, "message" => "Image upload failed"]);
     exit;

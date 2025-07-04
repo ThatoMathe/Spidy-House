@@ -2,30 +2,46 @@
 $docRoot = $_SERVER['DOCUMENT_ROOT'];
 require_once $docRoot . '/config/db.php';
 
-
-allowOnlyAdmins('admin, manager');
+// Restrict access
+allowOnlyAdmins('admin,manager'); // Ensure only admin or manager can access
 
 function getUsers() {
     global $conn;
 
+    // Explicitly select only non-sensitive columns
     $sql = "
         SELECT 
-            *
-        FROM users";
+            UserID,
+            UserName,
+            Email,
+            Role,
+            WarehouseID,
+            is_2fa_enabled,
+            is_2fa_verified,
+            CreatedDate
+        FROM users
+    ";
 
-    $result = $conn->query($sql);
-
-    if ($result && $result->num_rows > 0) {
-        $users = [];
-        while($row = $result->fetch_assoc()) {
-            $users[] = $row;
-        }
-        return $users;
-    } else {
-        return [];
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        http_response_code(500);
+        return ["error" => "Failed to prepare query."];
     }
+
+    if (!$stmt->execute()) {
+        http_response_code(500);
+        return ["error" => "Failed to execute query."];
+    }
+
+    $result = $stmt->get_result();
+    $users = [];
+
+    while ($row = $result->fetch_assoc()) {
+        $users[] = $row;
+    }
+
+    return $users;
 }
 
-header('Content-Type: application/json');
 echo json_encode(getUsers(), JSON_PRETTY_PRINT);
 ?>

@@ -12,8 +12,8 @@ if ($method === 'OPTIONS') {
 
 if ($method === 'POST') {
     $input = json_decode(file_get_contents('php://input'), true);
-    $email = $input['email'] ?? '';
-    $password = $input['password'] ?? '';
+    $email = isset($input['email']) ? filter_var(trim($input['email']), FILTER_SANITIZE_EMAIL) : '';
+    $password = isset($input['password']) ? trim($input['password']) : '';
 
     if (!$email || !$password) {
         echo json_encode(['loggedIn' => false, 'error' => 'Missing credentials']);

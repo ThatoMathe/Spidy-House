@@ -18,13 +18,15 @@ function getProductsWithDetails() {
             p.CategoryID,
             c.CategoryName,
             s.SupplierName,
+            s.SupplierID,
             i.QuantityAvailable,
             i.MinimumStockLevel,
             i.MaximumStockLevel,
             i.LastOrderDate,
             w.WarehouseName,
             w.LocationName,
-            w.LocationAddress
+            w.LocationAddress,
+            w.WarehouseID
         FROM products p
         LEFT JOIN categories c ON p.CategoryID = c.CategoryID
         LEFT JOIN suppliers s ON p.SupplierID = s.SupplierID

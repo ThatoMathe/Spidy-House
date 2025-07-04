@@ -18,11 +18,8 @@ $supplierID = intval($data['SupplierID'] ?? 0);
 $minStock = intval($data['MinimumStockLevel'] ?? 0);
 $maxStock = intval($data['MaximumStockLevel'] ?? 0);
 $warehouseID = intval($data['WarehouseID'] ?? 0);
-$QuantityAvailable = intval($data['QuantityAvailable'] ?? 0);
-
 $sql = "UPDATE inventory SET
     SupplierID = ?,
-    QuantityAvailable = ?,
     MinimumStockLevel = ?,
     MaximumStockLevel = ?,
     WarehouseID = ?
@@ -35,7 +32,7 @@ if (!$stmt) {
     exit;
 }
 
-$stmt->bind_param("iiiiii", $supplierID, $QuantityAvailable, $minStock, $maxStock, $warehouseID, $inventoryID);
+$stmt->bind_param("iiiii", $supplierID, $minStock, $maxStock, $warehouseID, $inventoryID);
 
 if ($stmt->execute()) {
     echo json_encode(["success" => true]);

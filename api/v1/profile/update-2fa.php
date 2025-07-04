@@ -26,7 +26,7 @@ $isEnabled = $data['enable_2fa'] ? 1 : 0;
 
 // Only test mail if enabling 2FA
 if ($isEnabled) {
-    $settingsJson = @file_get_contents("https://spidywarehouse.unaux.com/api/v1/settings/general.php");
+    $settingsJson = @file_get_contents("https://spidywarehouse.unaux.co/api/v1/settings/general.php");
     $settings     = json_decode($settingsJson, true);
 
     if (! $settings || ! isset($settings['smtp_host'])) {
